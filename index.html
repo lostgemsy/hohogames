@@ -845,18 +845,18 @@ header{background:rgba(8,8,8,.96);border-color:#242424;backdrop-filter:blur(18px
 .hoho-profile{background:#121212;color:#ddd}
 .hoho-profile svg{stroke:#ddd}
 .genre-heading svg{stroke:#bbb}
-#container,.genre-games{grid-template-columns:repeat(14,minmax(0,1fr));gap:11px}
-.zone-item{position:relative;aspect-ratio:1.32/1;display:flex;flex-direction:column;justify-content:stretch;background:#111;border:1px solid #252525;border-radius:13px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,.22);transform:translateZ(0);transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .25s ease,box-shadow .28s ease,background .25s ease}
-.zone-item::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 1px rgba(255,255,255,.035);opacity:0;transition:opacity .25s ease}
-.zone-item img{width:100%;height:100%;min-height:0;flex:1;object-fit:cover;border:0;background:#161616;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .3s ease;filter:saturate(.88) brightness(.88)}
+#container,.genre-games{grid-template-columns:repeat(7,minmax(0,1fr));gap:14px}
+.zone-item{position:relative;aspect-ratio:1.32/1;display:flex;flex-direction:column;justify-content:stretch;background:#111;border:1px solid #252525;border-radius:18px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.28);transform:translateZ(0);transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .25s ease,box-shadow .28s ease,background .25s ease}
+.zone-item::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 1px rgba(255,255,255,.04);opacity:0;transition:opacity .25s ease}
+.zone-item img{width:100%;height:100%;min-height:0;flex:1;object-fit:cover;border:0;background:#161616;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .3s ease;filter:saturate(.9) brightness(.9)}
 .zone-item button{display:none!important}
-.zone-item:hover{z-index:2;transform:translateY(-5px) scale(1.035);background:#181818;border-color:#666;box-shadow:0 15px 30px rgba(0,0,0,.52),0 0 0 1px rgba(255,255,255,.025)}
+.zone-item:hover{z-index:2;transform:translateY(-4px) scale(1.025);background:#181818;border-color:#666;box-shadow:0 14px 28px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.03)}
 .zone-item:hover::after{opacity:1}
-.zone-item:hover img{transform:scale(1.06);filter:saturate(1.06) brightness(1.03)}
-#featuredZones .zone-item{flex:0 0 128px;aspect-ratio:1.32/1}
+.zone-item:hover img{transform:scale(1.05);filter:saturate(1.05) brightness(1.02)}
+#featuredZones .zone-item{flex:0 0 clamp(120px,9vw,150px);aspect-ratio:1.32/1;border-radius:16px}
 #featuredZones .zone-item img{height:100%}
 #featuredZones .zone-item button{display:none!important}
-#featuredZones{gap:13px;padding:5px 3px 14px;scroll-behavior:smooth}
+#featuredZones{gap:12px;padding:5px 3px 14px;scroll-behavior:smooth}
 .carousel-arrow{background:#151515;border-color:#363636;color:#eee;border-radius:50%;box-shadow:0 8px 22px #0008;transition:transform .25s cubic-bezier(.2,.8,.2,1),background .2s,border-color .2s}
 .carousel-arrow:hover{background:#252525;border-color:#777;transform:translateY(-50%) scale(1.09)}
 .genre-heading,details summary{color:#f0f0f0}
@@ -900,9 +900,11 @@ header{background:rgba(8,8,8,.96);border-color:#242424;backdrop-filter:blur(18px
 #container .zone-item:nth-child(3n),#rpgSection .zone-item:nth-child(3n),#horrorSection .zone-item:nth-child(3n){animation-delay:.035s}
 #container .zone-item:nth-child(3n + 1),#rpgSection .zone-item:nth-child(3n + 1),#horrorSection .zone-item:nth-child(3n + 1){animation-delay:.07s}
 @keyframes cardRise{from{opacity:0;transform:translateY(9px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
-@media(max-width:1400px){#container,.genre-games{grid-template-columns:repeat(10,minmax(0,1fr))}}
-@media(max-width:950px){#container,.genre-games{grid-template-columns:repeat(7,minmax(0,1fr))}}
-@media(max-width:580px){#container,.genre-games{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.zone-item{border-radius:9px}.zone-header{padding:7px 9px}.zone-controls{gap:5px}.zone-controls button{font-size:10px;padding:7px 9px}#zoneViewer>div[style*="position: relative"]{height:calc(100% - 44px)}}
+@media(max-width:1400px){#container,.genre-games{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media(max-width:1100px){#container,.genre-games{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:950px){#container,.genre-games{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:700px){#container,.genre-games{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:580px){#container,.genre-games{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.zone-item{border-radius:14px}.zone-header{padding:7px 9px}.zone-controls{gap:5px}.zone-controls button{font-size:10px;padding:7px 9px}#zoneViewer>div[style*="position: relative"]{height:calc(100% - 44px)}}
 @media(prefers-reduced-motion:reduce){.zone-item,.zone-item img,#zoneViewer,.hoho-nav-item{animation:none!important;transition:none!important}}
 
 </style>
@@ -1357,47 +1359,48 @@ async function openZone(file) {
     const loadId = ++activeGameLoad;
     const url = file.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
 
-    iframeLoader.classList.remove('hidden');
-    zoneFrame.style.opacity = '0';
     document.getElementById('zoneName').textContent = file.name;
     document.getElementById('zoneId').textContent = file.id;
     document.getElementById('zoneAuthor').textContent = "by " + (file.author || "Unknown");
     document.getElementById('zoneAuthor').href = file.authorLink || "#";
+
+    iframeLoader.classList.remove('hidden');
+    zoneFrame.style.opacity = '0';
     zoneViewer.classList.add("active");
 
     const u = new URL(window.location);
     u.searchParams.set('id', file.id);
     history.pushState(null, '', u.toString());
 
+    let loaderHidden = false;
+    const hideLoader = () => {
+        if (loaderHidden || loadId !== activeGameLoad) return;
+        loaderHidden = true;
+        iframeLoader.classList.add('hidden');
+        zoneFrame.style.opacity = '1';
+    };
+    const safetyTimer = setTimeout(hideLoader, 4000);
+
     try {
         const response = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now());
         if (!response.ok) throw new Error('Game request failed: ' + response.status);
         const html = await response.text();
-        if (loadId !== activeGameLoad) return;
+        if (loadId !== activeGameLoad) { clearTimeout(safetyTimer); return; }
 
-        zoneFrame.onload = null;
-        await new Promise(resolve => {
-            zoneFrame.addEventListener('load', resolve, { once: true });
-            zoneFrame.src = 'about:blank';
-        });
-        if (loadId !== activeGameLoad) return;
-
-        zoneFrame.addEventListener('load', () => {
-            if (loadId !== activeGameLoad) return;
-            iframeLoader.classList.add('hidden');
-            zoneFrame.style.opacity = '1';
-        }, { once: true });
-
-        const doc = zoneFrame.contentDocument;
+        const doc = zoneFrame.contentDocument || zoneFrame.contentWindow.document;
         doc.open();
         doc.write(html);
         doc.close();
+
+        requestAnimationFrame(() => requestAnimationFrame(hideLoader));
     } catch (error) {
-        if (loadId !== activeGameLoad) return;
+        if (loadId !== activeGameLoad) { clearTimeout(safetyTimer); return; }
         console.error('Could not load game:', error);
-        iframeLoader.classList.add('hidden');
-        zoneFrame.style.opacity = '1';
+        zoneFrame.addEventListener('load', hideLoader, { once: true });
         zoneFrame.src = url;
+        setTimeout(hideLoader, 2500);
+    } finally {
+        clearTimeout(safetyTimer);
     }
 }
 
@@ -1413,6 +1416,7 @@ function closeZone() {
     zoneViewer.classList.remove("active");
     zoneFrame.src = "about:blank";
     iframeLoader.classList.remove('hidden');
+    zoneFrame.style.opacity = '0';
     const u = new URL(window.location);
     u.searchParams.delete('id');
     history.pushState(null, '', u.toString());
@@ -1513,10 +1517,8 @@ listZones();
     localStorage.setItem('hohoFont',document.getElementById('hohoFont').value);
     applySettings();hide('hohoSettingsModal');
   });
-  // Rebuild the page once the existing catalog loader has populated zones.
   var search=document.getElementById('searchBar');
   search.addEventListener('input',function(){document.querySelectorAll('.hoho-nav-item').forEach(function(b){b.classList.toggle('active',b.dataset.category==='All Games')})});
-  // The existing chat app is reused in the mini panel, so its Firebase auth, friends, and messages remain intact.
 })();
 </script>
 <script type="module">
