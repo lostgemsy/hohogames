@@ -820,7 +820,7 @@ details summary::-webkit-details-marker{display:none}
 #hohoRoomMessages{height:210px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin:14px 0;padding:12px;background:#081226;border:1px solid #233c64;border-radius:12px}
 .hoho-room-message{max-width:85%;padding:8px 10px;background:#14284b;border-radius:11px;font-size:12px;overflow-wrap:anywhere}.hoho-room-message.mine{align-self:flex-end;background:#1d4c8b}
 #hohoRoomForm{display:flex;gap:8px}#hohoRoomInput{min-width:0;flex:1;background:#081226;border:1px solid #29456f;border-radius:11px;padding:10px;color:#fff;outline:none}
-@media(max-width:1400px){#container,.genre-games{grid-template-columns:repeat(10,minmax(0,1fr))}}
+@media(max-width:1400px){#container,.genre-games{grid-template-columns:repeat(14,minmax(0,1fr))}}
 @media(max-width:950px){body{padding-left:0}#hohoSidebar{width:68px;padding:14px 8px}.hoho-brand{justify-content:center;padding:4px 0 16px}.hoho-brand>div:last-child,.hoho-nav-label,.hoho-nav-item span,.hoho-profile span,#hohoCat{display:none}.hoho-nav-item{justify-content:center;padding:11px 0}.hoho-nav-item svg{width:19px;height:19px}header,main{margin-left:68px}header{padding:15px 18px}main{padding:20px 17px 60px}#container,.genre-games{grid-template-columns:repeat(7,minmax(0,1fr))}}
 @media(max-width:580px){header{padding:12px 12px;gap:10px}.header-controls{width:100%}.search-wrap{min-width:0}main{padding:16px 10px 60px}#container,.genre-games{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.zone-item img{height:58px}.zone-item button{font-size:9px;min-height:32px}.genre-heading{font-size:15px}#featuredZones .zone-item{flex-basis:112px}.chat-btn{right:12px;bottom:12px;padding:11px 13px}.zone-controls button{padding:7px;font-size:10px}#zoneViewer{inset:2vh 2vw}.hoho-card{padding:21px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
@@ -1134,17 +1134,12 @@ details summary::-webkit-details-marker{display:none}
     });
 })();
 
-/* =========================================================
-   CHAT BUTTON — opens chat.html in a NEW TAB with animation
-   ========================================================= */
+/* Chat button is handled by the embedded HOHO chat panel added below. */
 (function() {
     const chatToggle = document.getElementById('chatToggle');
     chatToggle.addEventListener('click', () => {
-        // Trigger the bounce + flash animation
         chatToggle.classList.add('opening');
         setTimeout(() => chatToggle.classList.remove('opening'), 600);
-        // Open chat.html in a new tab
-        window.open('chat.html', '_blank', 'noopener,noreferrer');
     });
 })();
 
