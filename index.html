@@ -453,6 +453,65 @@
             font-size: calc(15px * var(--scale));
         }
 
+
+        /* ---------- FEATURED CAROUSEL + GENRE SECTIONS ---------- */
+        .featured-shell { position: relative; }
+        #featuredZones {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            padding: 4px 2px 14px;
+            grid-template-columns: none;
+        }
+        #featuredZones::-webkit-scrollbar, .genre-games::-webkit-scrollbar { display: none; }
+        #featuredZones .zone-item, .genre-games .zone-item {
+            flex: 0 0 clamp(145px, 18vw, 205px);
+            scroll-snap-align: start;
+        }
+        .carousel-arrow {
+            position: absolute;
+            top: 42%;
+            z-index: 5;
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border: 2px solid var(--card-border);
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+            box-shadow: 0 6px 18px var(--shadow);
+            transition: transform .2s ease, background .2s ease;
+        }
+        .carousel-arrow:hover { transform: scale(1.08); background: var(--card-hover); }
+        .carousel-arrow svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+        .carousel-arrow.prev { left: -14px; }
+        .carousel-arrow.next { right: -14px; }
+        .genre-section { margin: 34px 0 42px; }
+        .genre-heading {
+            display: flex; align-items: center; gap: 14px;
+            margin: 0 0 18px; padding-bottom: 12px;
+            border-bottom: 2px solid var(--card-border);
+            font-size: clamp(2rem, 4vw, 3.4rem);
+            line-height: 1; font-weight: 950; letter-spacing: -.065em;
+        }
+        .genre-heading svg { width: 34px; height: 34px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .genre-games {
+            display: flex; gap: calc(18px * var(--scale)); overflow-x: auto;
+            scrollbar-width: none; scroll-snap-type: x mandatory; padding: 4px 2px 12px;
+        }
+        .genre-games .zone-item { flex-basis: clamp(145px, 18vw, 205px); }
+        @media (max-width: 700px) {
+            #featuredZones .zone-item, .genre-games .zone-item { flex-basis: 42vw; }
+            .carousel-arrow { width: 36px; height: 36px; }
+            .carousel-arrow.prev { left: -8px; }
+            .carousel-arrow.next { right: -8px; }
+            .genre-heading { font-size: 2.2rem; }
+            .genre-heading svg { width: 27px; height: 27px; }
+        }
+
         /* ---------- ZONE VIEWER (IFRAME) ---------- */
         #zoneViewer {
             position: fixed;
@@ -715,10 +774,35 @@
 </header>
 
 <main>
-    <details id="featuredZonesWrapper" open>
-        <summary id="allZonesSummary">Featured Games</summary>
-        <div id="featuredZones"></div>
-    </details>
+    <section id="featuredZonesWrapper" aria-label="Recommended games">
+        <h2 class="genre-heading" id="allZonesSummary">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></svg>
+            Recommended Games
+        </h2>
+        <div class="featured-shell">
+            <button class="carousel-arrow prev" id="featuredPrev" aria-label="Previous recommended games">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div id="featuredZones"></div>
+            <button class="carousel-arrow next" id="featuredNext" aria-label="Next recommended games">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+        </div>
+    </section>
+    <section class="genre-section" id="rpgSection">
+        <h2 class="genre-heading">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 14.5 8.5 20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5L12 3Z"/><path d="m19 15 .9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z"/></svg>
+            RPG
+        </h2>
+        <div class="genre-games" id="rpgGames"></div>
+    </section>
+    <section class="genre-section" id="horrorSection">
+        <h2 class="genre-heading">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a8 8 0 0 0-8 8v9l4-2 4 2 4-2 4 2v-9a8 8 0 0 0-8-8Z"/><path d="M9 10h.01M15 10h.01M9 15c2-2 4-2 6 0"/></svg>
+            Horror
+        </h2>
+        <div class="genre-games" id="horrorGames"></div>
+    </section>
     <details id="allZonesWrapper" open>
         <summary id="allSummary">All Games</summary>
         <div id="container">Loading...</div>
@@ -937,7 +1021,8 @@ async function listZones() {
         zones = json;
         if (zones[0]) zones[0].featured = true;
 
-        displayFeaturedZones(zones.filter(z => z.featured));
+        displayFeaturedZones(zones.filter(z => z.featured).concat(zones.filter(z => !z.featured && z.url && !z.url.startsWith('http')).slice(0, 24)));
+        populateGenreSections(zones);
         displayZones(zones);
 
         const search = new URLSearchParams(window.location.search);
@@ -959,7 +1044,7 @@ function buildCardsHTML(list) {
         const cover = file.cover.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
         const safeName = file.name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         html += '<div class="zone-item" data-id="' + file.id + '">' +
-                    '<img src="' + cover + '" alt="' + safeName + '" loading="eager" decoding="async">' +
+                    '<img src="' + cover + '" alt="' + safeName + '" loading="lazy" decoding="async">' +
                     '<button>' + safeName + '</button>' +
                 '</div>';
     }
@@ -968,9 +1053,15 @@ function buildCardsHTML(list) {
 
 function displayFeaturedZones(list) {
     featuredContainer.innerHTML = buildCardsHTML(list);
-    if (!list.length) featuredContainer.innerHTML = '<div class="empty-msg">No featured games.</div>';
-    else document.getElementById("allZonesSummary").textContent = `Featured Games (${list.length})`;
+    if (!list.length) featuredContainer.innerHTML = '<div class="empty-msg">No recommended games yet.</div>';
     bindCardEvents(featuredContainer);
+}
+
+function displayGenreZones(elementId, list, emptyText) {
+    const el = document.getElementById(elementId);
+    el.innerHTML = buildCardsHTML(list);
+    if (!list.length) el.innerHTML = '<div class="empty-msg">' + emptyText + '</div>';
+    bindCardEvents(el);
 }
 
 function displayZones(list) {
@@ -978,6 +1069,27 @@ function displayZones(list) {
     if (!list.length) container.innerHTML = '<div class="empty-msg">No games found.</div>';
     else document.getElementById("allSummary").textContent = `All Games (${list.length})`;
     bindCardEvents(container);
+}
+
+function setupFeaturedCarousel() {
+    const track = featuredContainer;
+    const scrollByPage = direction => {
+        const card = track.querySelector('.zone-item');
+        const step = card ? (card.getBoundingClientRect().width + 18) * Math.max(1, Math.floor(track.clientWidth / (card.getBoundingClientRect().width + 18))) : track.clientWidth;
+        track.scrollBy({ left: direction * step, behavior: 'smooth' });
+    };
+    document.getElementById('featuredPrev').addEventListener('click', () => scrollByPage(-1));
+    document.getElementById('featuredNext').addEventListener('click', () => scrollByPage(1));
+}
+
+function populateGenreSections(list) {
+    const playable = list.filter(game => game && game.url && !game.url.startsWith('http'));
+    const rpgPattern = /undertale|zelda|pokemon|pok[eé]mon|final fantasy|hollow knight|terraria|stardew|slime rancher|fallout|deltarune|fear & hunger|in stars and time|swords and souls|three goblets|one shot|omori|yume nikki|cave story|endroll|world box|worldbox|kingdom|adventure capitalist|adventure capatalist|slime rancher|fire emblem|octopath|persona|chrono trigger/i;
+    const horrorPattern = /five nights|fnaf|granny|backrooms|baldi|bendy|scary|horror|slender|silent hill|resident evil|iron lung|scp:|scp |amanda the adventurer|that's not my neighbor|fear to fathom|fears to fathom|dead plate|look outside|tattletail|hungry lamu|slendytubbies|witch's heart|miSide|midnight shift|the man in the window|bad parenting|schoolboy runaway|yandere simulator|cruelty squad|lobotomy corporation|i have no mouth|endoparasitic|fear assessment|god's flesh|abandoned|the deadseat|nubby's number factory|five night's at shrek/i;
+    const rpg = playable.filter(game => rpgPattern.test(game.name));
+    const horror = playable.filter(game => horrorPattern.test(game.name));
+    displayGenreZones('rpgGames', rpg, 'More RPG games are coming soon.');
+    displayGenreZones('horrorGames', horror, 'More horror games are coming soon.');
 }
 
 const cardClickHandlers = new WeakMap();
@@ -1007,46 +1119,37 @@ searchBar.addEventListener("input", () => {
 
 function openZone(file) {
     if (file.url.startsWith("http")) {
-        window.open(file.url, "_blank");
+        window.open(file.url, "_blank", "noopener,noreferrer");
         return;
     }
+
     iframeLoader.classList.remove('hidden');
+    document.getElementById('zoneName').textContent = file.name;
+    document.getElementById('zoneId').textContent = file.id;
+    document.getElementById('zoneAuthor').textContent = "by " + (file.author || "Unknown");
+    const authorLink = document.getElementById('zoneAuthor');
+    authorLink.href = file.authorLink || "#";
+    zoneViewer.classList.add("active");
 
+    // Navigate the iframe directly. This preserves relative asset URLs and lets
+    // the browser/CDN cache the game instead of downloading and rewriting HTML.
     const url = file.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-    fetch(url + "?t=" + Date.now()).then(r => r.text()).then(html => {
-        zoneFrame.contentDocument.open();
-        zoneFrame.contentDocument.write(html);
-        zoneFrame.contentDocument.close();
+    zoneFrame.src = url;
 
-        document.getElementById('zoneName').textContent = file.name;
-        document.getElementById('zoneId').textContent = file.id;
-        document.getElementById('zoneAuthor').textContent = "by " + file.author;
-        if (file.authorLink) document.getElementById('zoneAuthor').href = file.authorLink;
-        zoneViewer.classList.add("active");
-
-        setTimeout(() => {
-            iframeLoader.classList.add('hidden');
-        }, 400);
-
-        const u = new URL(window.location);
-        u.searchParams.set('id', file.id);
-        history.pushState(null, '', u.toString());
-    }).catch(err => {
-        alert("Failed to load game: " + err);
-        iframeLoader.classList.add('hidden');
-    });
+    const u = new URL(window.location);
+    u.searchParams.set('id', file.id);
+    history.pushState(null, '', u.toString());
 }
 
+zoneFrame.addEventListener('load', () => {
+    iframeLoader.classList.add('hidden');
+});
+
 function aboutBlank() {
-    const w = window.open("about:blank", "_blank");
     const zone = zones.find(z => z.id + '' === document.getElementById('zoneId').textContent);
-    if (!zone || !w) return;
+    if (!zone) return;
     const url = zone.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-    fetch(url + "?t=" + Date.now()).then(r => r.text()).then(html => {
-        w.document.open();
-        w.document.write(html);
-        w.document.close();
-    });
+    window.open(url, "_blank", "noopener,noreferrer");
 }
 
 function closeZone() {
@@ -1062,6 +1165,7 @@ function fullscreenZone() {
     if (zoneFrame.requestFullscreen) zoneFrame.requestFullscreen();
 }
 
+setupFeaturedCarousel();
 listZones();
 </script>
 
