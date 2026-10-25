@@ -732,9 +732,164 @@
                 transition-duration: 0.01ms !important;
             }
         }
-    </style>
+    
+/* HOHO GAMES BLUE ARCADE REDESIGN */
+:root{--bg:#070b16;--bg-2:#0b1224;--bg-3:#111d35;--text:#eaf2ff;--text-dim:#91a4c5;--text-dim-2:#c6d5f0;--card:#0e1830;--card-hover:#142343;--card-border:#1d3155;--card-border-hover:#3475df;--input-bg:#0a1225;--input-border:#263d67;--input-border-focus:#4b8dff;--shadow:rgba(0,0,0,.38);--shadow-glow:rgba(42,111,255,.12);--accent:#4b8dff;--accent-2:#71d5ff;--accent-glow:rgba(55,128,255,.18);--ring:rgba(75,141,255,.22);--scale:1;--font-base:14px;--meteor-color:#5e9dff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{padding:0 0 60px 238px;background:radial-gradient(ellipse at 70% -10%,#142a52 0%,#080e1e 42%,#060913 100%);color:var(--text);font-family:Inter,system-ui,sans-serif}
+body.dark-theme{--bg:#070b16;--bg-2:#0b1224;--bg-3:#111d35;--text:#eaf2ff;--text-dim:#91a4c5;--text-dim-2:#c6d5f0;--card:#0e1830;--card-hover:#142343;--card-border:#1d3155;--card-border-hover:#3475df;--input-bg:#0a1225;--input-border:#263d67;--input-border-focus:#4b8dff;--accent:#4b8dff;--accent-2:#71d5ff}
+#meteorCanvas{opacity:.16!important}
+header{max-width:none;margin:0;padding:20px 28px 16px;position:sticky;top:0;border:0;border-bottom:1px solid #1b2a49;border-radius:0;background:rgba(7,12,25,.88);backdrop-filter:blur(20px);box-shadow:0 12px 36px #0002;gap:12px;z-index:80}
+.header-top{gap:10px}.header-left{gap:12px}.title-wrap{gap:5px}
+h1{font-family:Inter,system-ui,sans-serif;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.07em}
+h1 .accent{background:linear-gradient(120deg,#70b7ff,#4e7bff 60%,#8ce8ff);-webkit-background-clip:text;background-clip:text}
+.tagline{font-size:10px;letter-spacing:.2em;color:#7f9cc9}
+.header-controls{gap:10px}.search-wrap{max-width:680px;min-width:150px}.search{height:42px;border:1px solid #26395d;border-radius:13px;background:#0b1428;font-size:13px;padding-left:42px}.search:focus{box-shadow:0 0 0 3px #3478ff25;border-color:#4b8dff}.search-wrap svg{left:14px}
+.rescale-wrap{display:none!important}
+.theme-toggle{width:42px;height:42px;border-radius:13px;border:1px solid #26395d;background:#0b1428}
+main{max-width:none;margin:0;padding:24px 26px 80px}
+.genre-heading{font-size:17px;letter-spacing:-.025em;display:flex;align-items:center;gap:9px;margin:0 0 13px;color:#eaf2ff}
+.genre-heading svg{width:19px;height:19px;stroke:#6ab4ff;fill:none;stroke-width:1.8}
+#featuredZonesWrapper,.genre-section,details{margin-bottom:30px;animation:fadeUp .45s ease both}
+.featured-shell{position:relative}
+#featuredZones{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:2px 2px 9px;scroll-behavior:smooth}
+#featuredZones::-webkit-scrollbar{display:none}
+.carousel-arrow{background:#13264a;border:1px solid #2a4779;border-radius:12px;color:#d8e8ff;width:34px;height:42px;top:38%;z-index:5}
+.carousel-arrow:hover{background:#2454a1;transform:translateY(-50%) scale(1.04)}
+.zone-item{min-width:0;background:linear-gradient(155deg,#111e39,#0b1428);border:1px solid #1e3155;border-radius:9px;overflow:hidden;box-shadow:0 5px 14px #0002;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;cursor:pointer}
+.zone-item:hover{transform:translateY(-3px);border-color:#428bff;box-shadow:0 10px 24px #236bff20}
+#featuredZones .zone-item{flex:0 0 126px}
+#featuredZones .zone-item img{height:72px}
+#featuredZones .zone-item button{font-size:10px;min-height:29px;padding:5px 6px}
+#container,.genre-games{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:10px}
+.zone-item img{display:block;width:100%;height:66px;object-fit:cover;background:#101a30;border-bottom:1px solid #203252}
+.zone-item button{display:block;width:100%;min-height:34px;padding:5px 4px;border:0;border-radius:0;background:transparent;color:#cbd9f2;font-size:10px;line-height:1.2;font-weight:600;white-space:normal;overflow-wrap:anywhere;cursor:pointer}
+.zone-item:hover button{color:white}
+details summary{list-style:none;cursor:pointer;font-size:17px;font-weight:800;padding:12px 0;color:#eaf2ff}
+details summary::-webkit-details-marker{display:none}
+#allSummary{border-bottom:1px solid #1b2d4d;margin-bottom:14px}
+.empty-msg{grid-column:1/-1;padding:25px;color:#91a4c5;text-align:center;background:#0c1529;border:1px dashed #263d67;border-radius:14px}
+.chat-btn{position:fixed;right:22px;bottom:20px;left:auto;background:linear-gradient(135deg,#3478ff,#38bdf8);border:0;border-radius:16px;padding:13px 18px;box-shadow:0 10px 28px #236bff50;z-index:150}
+.chat-btn:hover{transform:translateY(-3px);box-shadow:0 14px 32px #236bff60}
+#zoneViewer{position:fixed;inset:5vh 4vw;z-index:500;background:#080e1d;border:1px solid #2b4775;border-radius:18px;box-shadow:0 30px 100px #000b;overflow:hidden;transform:translateY(16px) scale(.985);opacity:0;pointer-events:none;transition:opacity .25s ease,transform .3s cubic-bezier(.2,.8,.2,1)}
+#zoneViewer.active{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.zone-header{background:#0d1830;border-bottom:1px solid #1f3358;padding:12px 16px}
+.zone-title h2{font-size:16px}.zone-title a{font-size:11px;color:#8ebdff}
+.zone-controls{gap:8px}.zone-controls button{background:#12254a;color:#dceaff;border:1px solid #2c4776;border-radius:10px;padding:8px 12px;font-size:12px;cursor:pointer}
+#zoneFrame{width:100%;height:100%;border:0;background:#fff}
+.iframe-loader{background:#080e1d;color:#dceaff}
+.spinner{border-color:#20375d;border-top-color:#5aa7ff}
+.loader-text{font-size:12px;letter-spacing:.1em}
+#hohoSidebar{position:fixed;left:0;top:0;bottom:0;width:220px;padding:17px 12px 14px;background:rgba(7,12,25,.96);border-right:1px solid #1b2a49;display:flex;flex-direction:column;z-index:120;backdrop-filter:blur(20px)}
+.hoho-brand{display:flex;align-items:center;gap:10px;padding:4px 8px 19px;border-bottom:1px solid #1b2a49}
+.hoho-mark{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#377fff,#29b6ed);box-shadow:0 5px 18px #246cff44}
+.hoho-mark svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8}
+.hoho-brand strong{display:block;font-size:14px;letter-spacing:-.05em}.hoho-brand small{display:block;font-size:9px;color:#7f9cc9;letter-spacing:.16em;text-transform:uppercase;margin-top:2px}
+.hoho-nav-label{font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#61799f;padding:18px 10px 8px}
+#hohoNav{display:flex;flex-direction:column;gap:3px;overflow:auto;scrollbar-width:thin}
+.hoho-nav-item{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;text-align:left;border:1px solid transparent;border-radius:10px;background:transparent;color:#91a5c8;font-size:12px;font-weight:600;cursor:pointer;transition:background .18s,color .18s,border-color .18s,transform .18s}
+.hoho-nav-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0}
+.hoho-nav-item:hover{background:#11203b;color:#eaf2ff;transform:translateX(2px)}
+.hoho-nav-item.active{background:linear-gradient(90deg,#17386a,#10213f);border-color:#234a80;color:#8dc6ff}
+.hoho-sidebar-bottom{margin-top:auto;border-top:1px solid #1b2a49;padding-top:12px;display:grid;gap:7px}
+.hoho-profile{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:11px;background:#0d1830;color:#c6d5f0;font-size:11px}
+.hoho-profile svg{width:20px;height:20px;stroke:#83baff;fill:none;stroke-width:1.8}
+#hohoCat{width:100%;height:75px;object-fit:contain;margin:8px auto 0;filter:drop-shadow(0 0 15px #377fff33)}
+#hohoLibraryLoader{position:fixed;inset:0;z-index:1000;background:rgba(5,10,22,.94);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:13px;opacity:0;visibility:hidden;transform:translateX(20px);transition:opacity .24s,transform .3s,visibility .24s}
+#hohoLibraryLoader.show{opacity:1;visibility:visible;transform:translateX(0)}
+.hoho-loader-ring{width:45px;height:45px;border:3px solid #1c3157;border-top-color:#6bb6ff;border-right-color:#4b8dff;border-radius:50%;animation:spinLoader .8s linear infinite}
+#hohoLibraryLoader strong{font-size:14px;letter-spacing:.02em}#hohoLibraryLoader span{font-size:11px;color:#829bc2}
+.hoho-modal{position:fixed;inset:0;z-index:2000;background:#030712d9;backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.hoho-modal.show{opacity:1;visibility:visible}
+.hoho-card{width:min(440px,100%);background:linear-gradient(155deg,#101e3a,#080f20);border:1px solid #2b4775;border-radius:23px;padding:27px;box-shadow:0 30px 90px #0009;transform:translateY(16px) scale(.98);transition:transform .3s}
+.hoho-modal.show .hoho-card{transform:translateY(0) scale(1)}
+.hoho-card h2{font-size:23px;letter-spacing:-.05em;margin:12px 0 8px}.hoho-card p{font-size:12px;line-height:1.65;color:#91a4c5}
+.hoho-card-actions{display:grid;gap:9px;margin-top:20px}
+.hoho-action{border:1px solid #29456f;border-radius:12px;background:#122344;color:#e8f2ff;padding:12px 15px;font-weight:700;font-size:12px;cursor:pointer;transition:transform .18s,background .18s}
+.hoho-action.primary{border:0;background:linear-gradient(110deg,#3478ff,#30b9ed);color:#fff}
+.hoho-action:hover{transform:translateY(-2px);background:#1a3766}.hoho-action.primary:hover{background:linear-gradient(110deg,#4c8bff,#45c9f5)}
+.hoho-mini-logo{width:49px;height:49px;border-radius:16px;background:linear-gradient(140deg,#3478ff,#32c0ef);display:grid;place-items:center;box-shadow:0 10px 30px #3478ff44}
+.hoho-mini-logo svg{width:28px;height:28px;stroke:white;fill:none;stroke-width:1.8}
+#hohoChatModal .hoho-card{width:min(1100px,96vw);height:min(760px,90vh);padding:0;overflow:hidden;display:flex;flex-direction:column}
+.hoho-modal-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#0d1931;border-bottom:1px solid #20385e;flex-shrink:0}
+.hoho-modal-head strong{font-size:13px}.hoho-close{width:32px;height:32px;border:1px solid #29456f;border-radius:10px;background:#122344;color:white;font-size:19px;cursor:pointer}
+#hohoChatFrame{border:0;width:100%;height:100%;background:#000;flex:1}
+#hohoQueueModal .hoho-card{width:min(500px,100%)}
+#hohoQueueStatus{margin-top:14px;padding:14px;border:1px solid #233c64;border-radius:12px;background:#09142a;color:#a7c7f5;font-size:12px;line-height:1.6}
+#hohoRoomMessages{height:210px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin:14px 0;padding:12px;background:#081226;border:1px solid #233c64;border-radius:12px}
+.hoho-room-message{max-width:85%;padding:8px 10px;background:#14284b;border-radius:11px;font-size:12px;overflow-wrap:anywhere}.hoho-room-message.mine{align-self:flex-end;background:#1d4c8b}
+#hohoRoomForm{display:flex;gap:8px}#hohoRoomInput{min-width:0;flex:1;background:#081226;border:1px solid #29456f;border-radius:11px;padding:10px;color:#fff;outline:none}
+@media(max-width:1400px){#container,.genre-games{grid-template-columns:repeat(10,minmax(0,1fr))}}
+@media(max-width:950px){body{padding-left:0}#hohoSidebar{width:68px;padding:14px 8px}.hoho-brand{justify-content:center;padding:4px 0 16px}.hoho-brand>div:last-child,.hoho-nav-label,.hoho-nav-item span,.hoho-profile span,#hohoCat{display:none}.hoho-nav-item{justify-content:center;padding:11px 0}.hoho-nav-item svg{width:19px;height:19px}header,main{margin-left:68px}header{padding:15px 18px}main{padding:20px 17px 60px}#container,.genre-games{grid-template-columns:repeat(7,minmax(0,1fr))}}
+@media(max-width:580px){header{padding:12px 12px;gap:10px}.header-controls{width:100%}.search-wrap{min-width:0}main{padding:16px 10px 60px}#container,.genre-games{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.zone-item img{height:58px}.zone-item button{font-size:9px;min-height:32px}.genre-heading{font-size:15px}#featuredZones .zone-item{flex-basis:112px}.chat-btn{right:12px;bottom:12px;padding:11px 13px}.zone-controls button{padding:7px;font-size:10px}#zoneViewer{inset:2vh 2vw}.hoho-card{padding:21px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+</style>
 </head>
 <body>
+
+<aside id="hohoSidebar">
+  <div class="hoho-brand">
+    <div class="hoho-mark"><svg viewBox="0 0 24 24"><path d="M4 8.5 12 3l8 5.5v7L12 21l-8-5.5z"/><path d="m8 10 4 2.5 4-2.5M12 12.5V17"/></svg></div>
+    <div><strong>HOHO GAMES</strong><small>Arcade network</small></div>
+  </div>
+  <div class="hoho-nav-label">Library</div>
+  <nav id="hohoNav">
+    <button class="hoho-nav-item active" data-category="Recommended"><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>Recommended</span></button>
+    <button class="hoho-nav-item" data-category="All Games"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>All Games</span></button>
+    <button class="hoho-nav-item" data-category="RPG"><svg viewBox="0 0 24 24"><path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></svg><span>RPG</span></button>
+    <button class="hoho-nav-item" data-category="Horror"><svg viewBox="0 0 24 24"><path d="M12 3a8 8 0 0 0-8 8v9l4-2 4 2 4-2 4 2v-9a8 8 0 0 0-8-8Z"/><path d="M9 10h.01M15 10h.01M9 15c2-2 4-2 6 0"/></svg><span>Horror</span></button>
+    <button class="hoho-nav-item" data-category="Action"><svg viewBox="0 0 24 24"><path d="M7 11V7a5 5 0 0 1 10 0v4M5 11h14l2 10H3z"/><path d="M9 15h6"/></svg><span>Action</span></button>
+    <button class="hoho-nav-item" data-category="Adventure"><svg viewBox="0 0 24 24"><path d="m3 3 7 18 3-8 8-3z"/><path d="m13 13 8 8"/></svg><span>Adventure</span></button>
+    <button class="hoho-nav-item" data-category="Arcade"><svg viewBox="0 0 24 24"><path d="M6 8h12a4 4 0 0 1 3.8 5.2l-1.1 3.4a2 2 0 0 1-3.2 1L14 15H10l-3.5 2.6a2 2 0 0 1-3.2-1l-1.1-3.4A4 4 0 0 1 6 8Z"/><path d="M7 11v4M5 13h4M16 12h.01M19 14h.01"/></svg><span>Arcade</span></button>
+    <button class="hoho-nav-item" data-category="Puzzle"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg><span>Puzzle</span></button>
+    <button class="hoho-nav-item" data-category="Racing"><svg viewBox="0 0 24 24"><path d="M5 16 3 10l3-4h12l3 4-2 6z"/><path d="M7 16v3M17 16v3M7 10h10M8 13h.01M16 13h.01"/></svg><span>Racing</span></button>
+    <button class="hoho-nav-item" data-category="Sports"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m12 7 3 2v4l-3 2-3-2V9zM9 9l-4-2M15 9l4-2M9 13l-3 5M15 13l3 5"/></svg><span>Sports</span></button>
+    <button class="hoho-nav-item" data-category="Platformer"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 20v-5h5v5M14 20V9h5v11M3 7h5"/></svg><span>Platformer</span></button>
+    <button class="hoho-nav-item" data-category="Strategy"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 8 9 8 9s8-4 8-9V7z"/><path d="m9 12 2 2 4-5"/></svg><span>Strategy</span></button>
+    <button class="hoho-nav-item" data-category="Simulation"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 6"/></svg><span>Simulation</span></button>
+    <button class="hoho-nav-item" data-category="Idle"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg><span>Idle / Clicker</span></button>
+    <button class="hoho-nav-item" data-category="Multiplayer"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21v-2a7 7 0 0 1 14 0v2M17 4a4 4 0 0 1 0 8M19 15a5 5 0 0 1 3 4v2"/></svg><span>Multiplayer</span></button>
+    <button class="hoho-nav-item" data-category="Chat" id="hohoOpenChat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Chat</span></button>
+    <button class="hoho-nav-item" data-category="Queue" id="hohoOpenQueue"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Random chat queue</span></button>
+    <button class="hoho-nav-item" data-category="Settings" id="hohoOpenSettings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19 13 2 1-2 4-2-1-2 1v2H9v-2l-2-1-2 1-2-4 2-1V11l-2-1 2-4 2 1 2-1V4h6v2l2 1 2-1 2 4-2 1z"/></svg><span>Settings</span></button>
+  </nav>
+  <div class="hoho-sidebar-bottom">
+    <div class="hoho-profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span id="hohoProfileLabel">Guest profile · Sign in</span></div>
+    <img id="hohoCat" src="cat.gif" alt="Dancing cat logo" onerror="this.style.display='none'">
+  </div>
+</aside>
+<div id="hohoLibraryLoader"><div class="hoho-loader-ring"></div><strong>Loading your game library</strong><span>Finding something fun to play…</span></div>
+<div class="hoho-modal" id="hohoWelcomeModal">
+  <div class="hoho-card">
+    <div class="hoho-mini-logo"><svg viewBox="0 0 24 24"><path d="M4 8.5 12 3l8 5.5v7L12 21l-8-5.5z"/><path d="m8 10 4 2.5 4-2.5M12 12.5V17"/></svg></div>
+    <h2>Welcome to HOHO GAMES</h2><p>Jump into your library, sign in to chat with friends, or continue as a guest. Your game collection is ready when you are.</p>
+    <div class="hoho-card-actions"><button class="hoho-action primary" id="hohoSignInBtn">Sign in / create account</button><button class="hoho-action" id="hohoGuestBtn">I’m here to play, not chat</button></div>
+  </div>
+</div>
+<div class="hoho-modal" id="hohoChatModal">
+  <div class="hoho-card"><div class="hoho-modal-head"><strong>HOHO GAMES · Community chat</strong><button class="hoho-close" data-close="hohoChatModal" aria-label="Close chat">×</button></div><iframe id="hohoChatFrame" title="HOHO community chat" loading="lazy"></iframe></div>
+</div>
+<div class="hoho-modal" id="hohoQueueModal">
+  <div class="hoho-card">
+    <div class="hoho-modal-head" style="margin:-27px -27px 18px"><strong>Random chat queue</strong><button class="hoho-close" data-close="hohoQueueModal" aria-label="Close queue">×</button></div>
+    <h2>Meet someone new</h2><p>Choose guest matching or sign in to use your chat profile. You’ll only be connected when another person is waiting too.</p>
+    <div class="hoho-card-actions"><button class="hoho-action primary" id="hohoQueueGuest">Queue as guest</button><button class="hoho-action" id="hohoQueueSigned">Sign in before queueing</button><button class="hoho-action" id="hohoQueueCancel" style="display:none">Leave queue</button></div>
+    <div id="hohoQueueStatus">Choose an option to start looking for a match.</div>
+    <div id="hohoRoomMessages" style="display:none"></div>
+    <form id="hohoRoomForm" style="display:none"><input id="hohoRoomInput" maxlength="500" placeholder="Say hello…" autocomplete="off"><button class="hoho-action primary" type="submit">Send</button></form>
+  </div>
+</div>
+<div class="hoho-modal" id="hohoSettingsModal">
+  <div class="hoho-card"><div class="hoho-modal-head" style="margin:-27px -27px 18px"><strong>Appearance settings</strong><button class="hoho-close" data-close="hohoSettingsModal">×</button></div>
+    <h2>Make it yours</h2><p>Choose a theme and font. Your preference is saved on this device.</p>
+    <label style="display:block;font-size:12px;margin:18px 0 7px;color:#91a4c5">Accent color</label><select id="hohoAccent" style="width:100%;padding:11px;background:#081226;color:white;border:1px solid #29456f;border-radius:10px"><option value="blue">Blue (default)</option><option value="violet">Violet</option><option value="cyan">Cyan</option><option value="green">Emerald</option><option value="rose">Rose</option></select>
+    <label style="display:block;font-size:12px;margin:18px 0 7px;color:#91a4c5">Text font</label><select id="hohoFont" style="width:100%;padding:11px;background:#081226;color:white;border:1px solid #29456f;border-radius:10px"><option value="Inter">Modern (Inter)</option><option value="Minecraft">Minecraft style</option><option value="system-ui">System default</option></select>
+    <div class="hoho-card-actions"><button class="hoho-action primary" id="hohoSaveSettings">Save settings</button></div>
+  </div>
+</div>
+
 
 <canvas id="meteorCanvas"></canvas>
 
@@ -1167,6 +1322,158 @@ function fullscreenZone() {
 
 setupFeaturedCarousel();
 listZones();
+</script>
+
+
+<script>
+(function(){
+  var modalIds=['hohoWelcomeModal','hohoChatModal','hohoQueueModal','hohoSettingsModal'];
+  function show(id){var el=document.getElementById(id);if(el)el.classList.add('show')}
+  function hide(id){var el=document.getElementById(id);if(el)el.classList.remove('show')}
+  modalIds.forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('click',function(e){if(e.target===el)hide(id)})});
+  document.querySelectorAll('[data-close]').forEach(function(b){b.addEventListener('click',function(){hide(b.dataset.close)})});
+  var welcome=document.getElementById('hohoWelcomeModal');
+  if(!localStorage.getItem('hohoWelcomeDismissed'))show('hohoWelcomeModal');
+  document.getElementById('hohoGuestBtn').addEventListener('click',function(){localStorage.setItem('hohoWelcomeDismissed','1');hide('hohoWelcomeModal');document.getElementById('hohoProfileLabel').textContent='Guest profile · Sign in';});
+  function openChat(){var frame=document.getElementById('hohoChatFrame');if(!frame.src)frame.src='chat.html';show('hohoChatModal');}
+  document.getElementById('hohoSignInBtn').addEventListener('click',function(){localStorage.setItem('hohoWelcomeDismissed','1');hide('hohoWelcomeModal');openChat();});
+  document.getElementById('hohoOpenChat').addEventListener('click',function(){setActive(this);openChat()});
+  document.getElementById('chatToggle').addEventListener('click',function(e){e.preventDefault();openChat()});
+  document.getElementById('hohoOpenQueue').addEventListener('click',function(){setActive(this);show('hohoQueueModal')});
+  document.getElementById('hohoOpenSettings').addEventListener('click',function(){setActive(this);show('hohoSettingsModal')});
+  function setActive(btn){document.querySelectorAll('.hoho-nav-item').forEach(function(b){b.classList.toggle('active',b===btn)})}
+  var categoryPatterns={
+    'RPG':/undertale|zelda|pokemon|pok[eé]mon|final fantasy|hollow knight|terraria|stardew|slime rancher|fallout|deltarune|fear & hunger|in stars and time|swords and souls|three goblets|one shot|omori|yume nikki|cave story|endroll|world.?box|kingdom|adventure capitalist|fire emblem|octopath|persona|chrono trigger|rpg/i,
+    'Horror':/five nights|fnaf|granny|backrooms|baldi|bendy|scary|horror|slender|silent hill|resident evil|iron lung|scp|amanda the adventurer|that's not my neighbor|fear to fathom|dead plate|look outside|tattletail|hungry lamu|slendytubbies|witch's heart|miside|midnight shift|man in the window|bad parenting|nubby's number factory/i,
+    'Action':/action|shooter|gun|combat|fight|battle|warrior|arena|strike|zombie|soldier|assassin|duel/i,
+    'Adventure':/adventure|quest|explore|journey|island|escape|survival|story/i,
+    'Arcade':/arcade|classic|retro|pac.?man|space invader|flappy|crossy|snake|pong|breakout/i,
+    'Puzzle':/puzzle|brain|logic|sudoku|mahjong|word|2048|match|block|chess|checkers|minesweeper/i,
+    'Racing':/racing|race|drift|car|kart|bike|motor|drive|parking|traffic/i,
+    'Sports':/sport|football|soccer|basketball|baseball|golf|tennis|skate|snowboard|hockey|boxing|pool|bowling/i,
+    'Platformer':/platform|mario|sonic|jump|run.?and.?gun|geometry dash|obby|parkour|stickman/i,
+    'Strategy':/strategy|tower defense|td |defense|defence|war|empire|kingdom|tactics|chess|battle simulator/i,
+    'Simulation':/simulator|simulation|tycoon|build|farm|city|life sim|manager|business|restaurant|flight/i,
+    'Idle':/idle|clicker|incremental|cookie|miner|money|capitalist|afk/i,
+    'Multiplayer':/multiplayer|2 player|2-player|two player|online|io game|agar|slither|shell shock|krunker|buildnow|1v1/i
+  };
+  function categoryFilter(category){
+    var list=Array.isArray(zones)?zones.slice():[];
+    if(category==='Recommended')return list.filter(function(z){return z.featured||(!z.url||!z.url.startsWith('http'))}).slice(0,24);
+    if(category==='All Games')return list;
+    var pattern=categoryPatterns[category];if(!pattern)return list;
+    return list.filter(function(z){return z&&z.name&&pattern.test(z.name)});
+  }
+  function loadingSwitch(category,button){
+    setActive(button);
+    var loader=document.getElementById('hohoLibraryLoader');loader.classList.add('show');
+    document.querySelector('main').style.opacity='.35';
+    window.setTimeout(function(){
+      var list=categoryFilter(category);
+      if(category==='Recommended'){
+        document.getElementById('featuredZonesWrapper').style.display='';
+        document.getElementById('rpgSection').style.display='none';
+        document.getElementById('horrorSection').style.display='none';
+        document.getElementById('allZonesWrapper').style.display='';
+        document.getElementById('allSummary').textContent='Recommended games ('+list.length+')';
+      }else{
+        document.getElementById('featuredZonesWrapper').style.display='none';
+        document.getElementById('rpgSection').style.display='none';
+        document.getElementById('horrorSection').style.display='none';
+        document.getElementById('allZonesWrapper').style.display='';
+        document.getElementById('allSummary').textContent=category+' ('+list.length+')';
+      }
+      displayZones(list);
+      document.getElementById('searchBar').value='';
+      document.querySelector('main').style.opacity='1';
+      loader.classList.remove('show');
+      window.scrollTo({top:0,behavior:'smooth'});
+    },260);
+  }
+  document.querySelectorAll('.hoho-nav-item[data-category]').forEach(function(button){
+    if(button.id==='hohoOpenChat'||button.id==='hohoOpenQueue'||button.id==='hohoOpenSettings')return;
+    button.addEventListener('click',function(){loadingSwitch(button.dataset.category,button)});
+  });
+  document.getElementById('hohoAccent').value=localStorage.getItem('hohoAccent')||'blue';
+  document.getElementById('hohoFont').value=localStorage.getItem('hohoFont')||'Inter';
+  function applySettings(){
+    var accent=document.getElementById('hohoAccent').value;
+    var colors={blue:['#4b8dff','#71d5ff'],violet:['#9a75ff','#d0a5ff'],cyan:['#22c8e8','#86f1ff'],green:['#22c78e','#8af0c7'],rose:['#f36b9b','#ffc0d4']};
+    var pair=colors[accent]||colors.blue;
+    document.documentElement.style.setProperty('--accent',pair[0]);document.documentElement.style.setProperty('--accent-2',pair[1]);
+    document.documentElement.style.setProperty('--input-border-focus',pair[0]);
+    document.documentElement.style.setProperty('--font-base','14px');
+    document.body.style.fontFamily=document.getElementById('hohoFont').value==='Minecraft'?'monospace':document.getElementById('hohoFont').value+',system-ui,sans-serif';
+  }
+  applySettings();
+  document.getElementById('hohoSaveSettings').addEventListener('click',function(){
+    localStorage.setItem('hohoAccent',document.getElementById('hohoAccent').value);
+    localStorage.setItem('hohoFont',document.getElementById('hohoFont').value);
+    applySettings();hide('hohoSettingsModal');
+  });
+  // Rebuild the page once the existing catalog loader has populated zones.
+  var search=document.getElementById('searchBar');
+  search.addEventListener('input',function(){document.querySelectorAll('.hoho-nav-item').forEach(function(b){b.classList.toggle('active',b.dataset.category==='All Games')})});
+  // The existing chat app is reused in the mini panel, so its Firebase auth, friends, and messages remain intact.
+})();
+</script>
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import {getDatabase,ref,push,set,onValue,remove,onChildAdded,serverTimestamp,query,limitToLast} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+const firebaseConfig={apiKey:"AIzaSyAccCz18_wyMFOilTAzHNFh6GjzUztRtn0",authDomain:"chat-d168b.firebaseapp.com",databaseURL:"https://chat-d168b-default-rtdb.firebaseio.com",projectId:"chat-d168b",storageBucket:"chat-d168b.firebasestorage.app",messagingSenderId:"667247316335",appId:"1:667247316335:web:b10e4e1eabbd4f565a2c9a"};
+const db=getDatabase(initializeApp(firebaseConfig,'hohoQueueApp'));
+const $=id=>document.getElementById(id);
+const uid=localStorage.getItem('hohoQueueUid')||('guest_'+Math.random().toString(36).slice(2)+Date.now().toString(36));
+localStorage.setItem('hohoQueueUid',uid);
+let queueKey=null,queueListener=null,roomListener=null,currentRoom=null,matched=false;
+function queueStatus(text){$('hohoQueueStatus').textContent=text}
+function stopQueue(){
+ if(queueListener){queueListener();queueListener=null}
+ if(queueKey)remove(ref(db,'randomQueue/'+queueKey)).catch(()=>{});
+ queueKey=null;
+ if(roomListener){roomListener();roomListener=null}
+ $('hohoQueueCancel').style.display='none';$('hohoRoomMessages').style.display='none';$('hohoRoomForm').style.display='none';
+}
+function startQueue(kind){
+ stopQueue();matched=false;currentRoom=null;
+ const key=push(ref(db,'randomQueue')).key;queueKey=key;
+ set(ref(db,'randomQueue/'+key),{uid:uid,kind:kind,status:'waiting',createdAt:Date.now(),name:kind==='guest'?'Guest':('Player-'+uid.slice(-4))}).then(()=>{
+  $('hohoQueueCancel').style.display='block';queueStatus('Looking for another person… keep this window open. You will be connected when someone else is waiting.');
+  queueListener=onValue(ref(db,'randomQueue'),async snap=>{
+   if(!queueKey||matched)return;
+   const entries=snap.val()||{};
+   const other=Object.entries(entries).find(([k,v])=>k!==queueKey&&v&&v.status==='waiting'&&v.uid!==uid&&Date.now()-(v.createdAt||0)<120000);
+   if(!other)return;
+   matched=true;const otherKey=other[0],otherVal=other[1];
+   const roomId=[queueKey,otherKey].sort().join('_');
+   currentRoom=roomId;
+   await set(ref(db,'randomQueue/'+queueKey+'/status'),'matched');
+   await set(ref(db,'randomQueue/'+otherKey+'/status'),'matched');
+   await set(ref(db,'randomRooms/'+roomId+'/members/'+uid),true);
+   await set(ref(db,'randomRooms/'+roomId+'/members/'+otherVal.uid),true);
+   remove(ref(db,'randomQueue/'+queueKey)).catch(()=>{});remove(ref(db,'randomQueue/'+otherKey)).catch(()=>{});
+   if(queueListener){queueListener();queueListener=null}
+   queueStatus('Match found. Say hello! Please be respectful and do not share personal information.');
+   $('hohoRoomMessages').style.display='flex';$('hohoRoomForm').style.display='flex';$('hohoQueueCancel').style.display='block';
+   roomListener=onChildAdded(query(ref(db,'randomRooms/'+roomId+'/messages'),limitToLast(80)),child=>{
+    const m=child.val();if(!m)return;
+    const node=document.createElement('div');node.className='hoho-room-message'+(m.uid===uid?' mine':'');
+    const label=document.createElement('strong');label.textContent=m.name+': ';node.appendChild(label);
+    node.appendChild(document.createTextNode(String(m.text||'')));
+    $('hohoRoomMessages').appendChild(node);$('hohoRoomMessages').scrollTop=$('hohoRoomMessages').scrollHeight;
+   });
+  });
+ }).catch(()=>queueStatus('Could not join the queue. Firebase may not allow queue writes yet; check the database rules.'));
+}
+$('hohoQueueGuest').addEventListener('click',()=>startQueue('guest'));
+$('hohoQueueSigned').addEventListener('click',()=>{ $('hohoQueueStatus').textContent='Sign in through Community chat first, then return here and choose Queue as guest. Signed-in matching is being kept separate from the guest queue for now.'; $('hohoChatFrame').src='chat.html'; document.getElementById('hohoChatModal').classList.add('show');});
+$('hohoQueueCancel').addEventListener('click',()=>{stopQueue();queueStatus('You left the queue. Choose an option to try again.')});
+$('hohoRoomForm').addEventListener('submit',async e=>{
+ e.preventDefault();const text=$('hohoRoomInput').value.trim();if(!text||!currentRoom)return;
+ $('hohoRoomInput').value='';
+ await push(ref(db,'randomRooms/'+currentRoom+'/messages'),{uid:uid,name:'Player-'+uid.slice(-4),text:text.slice(0,500),createdAt:serverTimestamp()});
+});
+document.querySelectorAll('[data-close="hohoQueueModal"]').forEach(b=>b.addEventListener('click',stopQueue));
 </script>
 
 </body>
