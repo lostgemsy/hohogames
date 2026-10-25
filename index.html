@@ -1382,16 +1382,16 @@ async function openZone(file) {
         });
         if (loadId !== activeGameLoad) return;
 
-        const doc = zoneFrame.contentDocument;
-        doc.open();
-        doc.write(html);
-        doc.close();
-
         zoneFrame.addEventListener('load', () => {
             if (loadId !== activeGameLoad) return;
             iframeLoader.classList.add('hidden');
             zoneFrame.style.opacity = '1';
         }, { once: true });
+
+        const doc = zoneFrame.contentDocument;
+        doc.open();
+        doc.write(html);
+        doc.close();
     } catch (error) {
         if (loadId !== activeGameLoad) return;
         console.error('Could not load game:', error);
@@ -1409,6 +1409,7 @@ function aboutBlank() {
 }
 
 function closeZone() {
+    activeGameLoad++;
     zoneViewer.classList.remove("active");
     zoneFrame.src = "about:blank";
     iframeLoader.classList.remove('hidden');
