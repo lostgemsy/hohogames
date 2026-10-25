@@ -1346,12 +1346,15 @@ searchBar.addEventListener("input", () => {
     }, 80);
 });
 
+let activeGameLoad = 0;
+
 async function openZone(file) {
     if (file.url.startsWith("http")) {
         window.open(file.url, "_blank", "noopener,noreferrer");
         return;
     }
 
+    const loadId = ++activeGameLoad;
     iframeLoader.classList.remove('hidden');
     zoneFrame.style.opacity = '0';
     document.getElementById('zoneName').textContent = file.name;
@@ -1369,8 +1372,10 @@ async function openZone(file) {
     // assigning srcdoc forces HTML parsing; <base> preserves relative game assets.
     try {
         const response = await fetch(url, { cache: 'default' });
+        if (loadId !== activeGameLoad) return;
         if (!response.ok) throw new Error('Game request failed: ' + response.status);
         let source = await response.text();
+        if (loadId !== activeGameLoad) return;
         const baseTag = '<base href="' + url.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '">';
         if (/<head(?:\s[^>]*)?>/i.test(source)) {
             if (/<base\b/i.test(source)) source = source.replace(/<base\b[^>]*>/i, baseTag);
@@ -1380,6 +1385,7 @@ async function openZone(file) {
         }
         zoneFrame.srcdoc = source;
     } catch (error) {
+        if (loadId !== activeGameLoad) return;
         console.warn('Could not fetch game HTML; falling back to direct iframe navigation.', error);
         zoneFrame.src = url;
     }
@@ -1390,6 +1396,8 @@ async function openZone(file) {
 }
 
 zoneFrame.addEventListener('load', () => {
+    // Ignore the temporary blank document while the next game is being fetched.
+    if (zoneFrame.src === 'about:blank' && !zoneFrame.hasAttribute('srcdoc')) return;
     iframeLoader.classList.add('hidden');
     zoneFrame.style.opacity = '1';
 });
