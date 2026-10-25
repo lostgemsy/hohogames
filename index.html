@@ -1355,52 +1355,51 @@ async function openZone(file) {
     }
 
     const loadId = ++activeGameLoad;
+    const url = file.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
+
     iframeLoader.classList.remove('hidden');
     zoneFrame.style.opacity = '0';
     document.getElementById('zoneName').textContent = file.name;
     document.getElementById('zoneId').textContent = file.id;
     document.getElementById('zoneAuthor').textContent = "by " + (file.author || "Unknown");
-    const authorLink = document.getElementById('zoneAuthor');
-    authorLink.href = file.authorLink || "#";
+    document.getElementById('zoneAuthor').href = file.authorLink || "#";
     zoneViewer.classList.add("active");
-
-    const url = file.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-    zoneFrame.removeAttribute('srcdoc');
-    zoneFrame.src = 'about:blank';
-
-    // Some static hosts serve stored .html files as text/plain. Fetching and
-    // assigning srcdoc forces HTML parsing; <base> preserves relative game assets.
-    try {
-        const response = await fetch(url, { cache: 'default' });
-        if (loadId !== activeGameLoad) return;
-        if (!response.ok) throw new Error('Game request failed: ' + response.status);
-        let source = await response.text();
-        if (loadId !== activeGameLoad) return;
-        const baseTag = '<base href="' + url.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '">';
-        if (/<head(?:\s[^>]*)?>/i.test(source)) {
-            if (/<base\b/i.test(source)) source = source.replace(/<base\b[^>]*>/i, baseTag);
-            else source = source.replace(/<head(?:\s[^>]*)?>/i, match => match + baseTag);
-        } else {
-            source = '<!doctype html><html><head>' + baseTag + '</head><body>' + source + '</body></html>';
-        }
-        zoneFrame.srcdoc = source;
-    } catch (error) {
-        if (loadId !== activeGameLoad) return;
-        console.warn('Could not fetch game HTML; falling back to direct iframe navigation.', error);
-        zoneFrame.src = url;
-    }
 
     const u = new URL(window.location);
     u.searchParams.set('id', file.id);
     history.pushState(null, '', u.toString());
-}
 
-zoneFrame.addEventListener('load', () => {
-    // Ignore the temporary blank document while the next game is being fetched.
-    if (zoneFrame.src === 'about:blank' && !zoneFrame.hasAttribute('srcdoc')) return;
-    iframeLoader.classList.add('hidden');
-    zoneFrame.style.opacity = '1';
-});
+    try {
+        const response = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now());
+        if (!response.ok) throw new Error('Game request failed: ' + response.status);
+        const html = await response.text();
+        if (loadId !== activeGameLoad) return;
+
+        zoneFrame.onload = null;
+        await new Promise(resolve => {
+            zoneFrame.addEventListener('load', resolve, { once: true });
+            zoneFrame.src = 'about:blank';
+        });
+        if (loadId !== activeGameLoad) return;
+
+        const doc = zoneFrame.contentDocument;
+        doc.open();
+        doc.write(html);
+        doc.close();
+
+        zoneFrame.addEventListener('load', () => {
+            if (loadId !== activeGameLoad) return;
+            iframeLoader.classList.add('hidden');
+            zoneFrame.style.opacity = '1';
+        }, { once: true });
+    } catch (error) {
+        if (loadId !== activeGameLoad) return;
+        console.error('Could not load game:', error);
+        iframeLoader.classList.add('hidden');
+        zoneFrame.style.opacity = '1';
+        zoneFrame.src = url;
+    }
+}
 
 function aboutBlank() {
     const zone = zones.find(z => z.id + '' === document.getElementById('zoneId').textContent);
