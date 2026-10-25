@@ -825,14 +825,93 @@ details summary::-webkit-details-marker{display:none}
 @media(max-width:580px){header{padding:12px 12px;gap:10px}.header-controls{width:100%}.search-wrap{min-width:0}main{padding:16px 10px 60px}#container,.genre-games{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.zone-item img{height:58px}.zone-item button{font-size:9px;min-height:32px}.genre-heading{font-size:15px}#featuredZones .zone-item{flex-basis:112px}.chat-btn{right:12px;bottom:12px;padding:11px 13px}.zone-controls button{padding:7px;font-size:10px}#zoneViewer{inset:2vh 2vw}.hoho-card{padding:21px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
+
+/* HOHO refinement: monochrome, premium cards, full-window player */
+:root{--bg:#080808;--bg-2:#101010;--bg-3:#171717;--text:#f4f4f4;--text-dim:#a0a0a0;--text-dim-2:#d0d0d0;--card:#121212;--card-hover:#1b1b1b;--card-border:#282828;--card-border-hover:#626262;--input-bg:#111;--input-border:#303030;--input-border-focus:#c9c9c9;--shadow:rgba(0,0,0,.6);--shadow-glow:rgba(255,255,255,.025);--accent:#ededed;--accent-2:#fff;--accent-glow:rgba(255,255,255,.07);--ring:rgba(255,255,255,.1);--meteor-color:#888}
+body,body.dark-theme{background:#080808;color:#f4f4f4;--bg:#080808;--bg-2:#101010;--bg-3:#171717;--text:#f4f4f4;--text-dim:#a0a0a0;--text-dim-2:#d0d0d0;--card:#121212;--card-hover:#1b1b1b;--card-border:#282828;--card-border-hover:#626262;--input-bg:#111;--input-border:#303030;--input-border-focus:#c9c9c9;--accent:#ededed;--accent-2:#fff;--accent-glow:rgba(255,255,255,.07);--ring:rgba(255,255,255,.1)}
+#meteorCanvas{opacity:.06!important}
+h1 .accent{background:none!important;color:#f4f4f4!important;-webkit-text-fill-color:#f4f4f4!important}
+.tagline,.hoho-brand small{color:#8c8c8c!important}
+header{background:rgba(8,8,8,.96);border-color:#242424;backdrop-filter:blur(18px)}
+.search,.theme-toggle{background:#111;border-color:#303030}
+#hohoSidebar{background:#080808;border-color:#252525;backdrop-filter:none}
+.hoho-brand{padding:7px 10px 19px;border-color:#252525}
+.hoho-mark{display:none!important}
+.hoho-brand strong{font-size:16px;letter-spacing:-.055em;color:#f4f4f4}
+.hoho-nav-item{color:#999;border-radius:9px;transition:background .22s ease,color .22s ease,transform .25s cubic-bezier(.2,.8,.2,1),border-color .22s ease}
+.hoho-nav-item svg{stroke:currentColor}
+.hoho-nav-item:hover{background:#191919;color:#fff;transform:translateX(3px)}
+.hoho-nav-item.active{background:#1b1b1b;border-color:#333;color:#fff;box-shadow:inset 2px 0 #ddd}
+.hoho-profile{background:#121212;color:#ddd}
+.hoho-profile svg{stroke:#ddd}
+.genre-heading svg{stroke:#bbb}
+#container,.genre-games{grid-template-columns:repeat(14,minmax(0,1fr));gap:11px}
+.zone-item{position:relative;aspect-ratio:1.32/1;display:flex;flex-direction:column;justify-content:stretch;background:#111;border:1px solid #252525;border-radius:13px;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,.22);transform:translateZ(0);transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .25s ease,box-shadow .28s ease,background .25s ease}
+.zone-item::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 1px rgba(255,255,255,.035);opacity:0;transition:opacity .25s ease}
+.zone-item img{width:100%;height:100%;min-height:0;flex:1;object-fit:cover;border:0;background:#161616;transition:transform .45s cubic-bezier(.2,.8,.2,1),filter .3s ease;filter:saturate(.88) brightness(.88)}
+.zone-item button{display:none!important}
+.zone-item:hover{z-index:2;transform:translateY(-5px) scale(1.035);background:#181818;border-color:#666;box-shadow:0 15px 30px rgba(0,0,0,.52),0 0 0 1px rgba(255,255,255,.025)}
+.zone-item:hover::after{opacity:1}
+.zone-item:hover img{transform:scale(1.06);filter:saturate(1.06) brightness(1.03)}
+#featuredZones .zone-item{flex:0 0 128px;aspect-ratio:1.32/1}
+#featuredZones .zone-item img{height:100%}
+#featuredZones .zone-item button{display:none!important}
+#featuredZones{gap:13px;padding:5px 3px 14px;scroll-behavior:smooth}
+.carousel-arrow{background:#151515;border-color:#363636;color:#eee;border-radius:50%;box-shadow:0 8px 22px #0008;transition:transform .25s cubic-bezier(.2,.8,.2,1),background .2s,border-color .2s}
+.carousel-arrow:hover{background:#252525;border-color:#777;transform:translateY(-50%) scale(1.09)}
+.genre-heading,details summary{color:#f0f0f0}
+.empty-msg{background:#101010;border-color:#333;color:#aaa}
+#zoneViewer{inset:0!important;border:0!important;border-radius:0!important;background:#050505!important;box-shadow:none!important;transform:translateY(14px) scale(.99);transition:opacity .28s ease,transform .38s cubic-bezier(.2,.8,.2,1)}
+#zoneViewer.active{transform:translateY(0) scale(1)}
+.zone-header{min-height:48px;flex-shrink:0;background:#090909;border-bottom:1px solid #242424;padding:8px 14px}
+.zone-title h2{display:none!important}
+.zone-title a{color:#aaa!important}
+.zone-controls button{background:#151515;color:#eee;border-color:#333;border-radius:9px;transition:background .2s,transform .2s,border-color .2s}
+.zone-controls button:hover{background:#242424;border-color:#666;transform:translateY(-1px)}
+#zoneViewer>div[style*="position: relative"]{height:calc(100% - 48px);min-height:0}
+#zoneFrame{display:block;width:100%;height:100%;min-height:0;flex:1;border:0;background:#050505;opacity:0;transition:opacity .25s ease}
+.iframe-loader{background:#050505!important;color:#eee!important}
+.iframe-loader .spinner{border-color:#282828!important;border-top-color:#eee!important;border-radius:50%!important}
+.iframe-loader .dots span{background:#ddd!important;border-radius:50%!important}
+#hohoLibraryLoader{background:#050505!important;backdrop-filter:none!important}
+.hoho-loader-ring{border-color:#282828!important;border-top-color:#eee!important;border-right-color:#aaa!important}
+.hoho-modal{background:#050505!important;backdrop-filter:none!important}
+.hoho-card{background:#111!important;border:1px solid #2b2b2b!important;color:#f4f4f4;box-shadow:0 30px 90px #000!important}
+.hoho-card p{color:#aaa!important}
+.hoho-action{background:#171717!important;border-color:#363636!important;color:#eee!important}
+.hoho-action:hover{background:#252525!important}
+.hoho-action.primary{background:#eee!important;color:#080808!important;border-color:#eee!important}
+.hoho-mini-logo{background:#171717!important;box-shadow:none!important;border:1px solid #333}
+.hoho-mini-logo svg{stroke:#eee!important}
+#hohoWelcomeModal{background:#050505!important;padding:0!important}
+#hohoWelcomeModal .hoho-card{width:100%!important;max-width:none!important;height:100%!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#050505!important;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px!important;transform:none!important}
+#hohoWelcomeModal .hoho-mini-logo{display:none!important}
+#hohoWelcomeModal .hoho-card h2{font-size:clamp(28px,5vw,48px);letter-spacing:-.06em;margin:0 0 12px}
+#hohoWelcomeModal .hoho-card p{max-width:420px;font-size:14px}
+#hohoWelcomeModal .hoho-card-actions{width:min(340px,100%)}
+#hohoWelcomeModal .hoho-action{padding:14px 16px}
+.hoho-card h2{color:#f4f4f4}
+.chat-btn{background:#eee!important;color:#080808!important;box-shadow:0 8px 24px #0008!important;border-radius:12px}
+.chat-btn:hover{background:#fff!important;box-shadow:0 14px 32px #000a!important}
+#hohoQueueStatus,#hohoRoomMessages,#hohoRoomInput{background:#090909!important;border-color:#303030!important;color:#ddd!important}
+#hohoAccent option{background:#111}
+#hohoCat{filter:grayscale(1) brightness(.85)}
+#container .zone-item,#rpgSection .zone-item,#horrorSection .zone-item{animation:cardRise .42s both}
+#container .zone-item:nth-child(3n),#rpgSection .zone-item:nth-child(3n),#horrorSection .zone-item:nth-child(3n){animation-delay:.035s}
+#container .zone-item:nth-child(3n + 1),#rpgSection .zone-item:nth-child(3n + 1),#horrorSection .zone-item:nth-child(3n + 1){animation-delay:.07s}
+@keyframes cardRise{from{opacity:0;transform:translateY(9px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:1400px){#container,.genre-games{grid-template-columns:repeat(10,minmax(0,1fr))}}
+@media(max-width:950px){#container,.genre-games{grid-template-columns:repeat(7,minmax(0,1fr))}}
+@media(max-width:580px){#container,.genre-games{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.zone-item{border-radius:9px}.zone-header{padding:7px 9px}.zone-controls{gap:5px}.zone-controls button{font-size:10px;padding:7px 9px}#zoneViewer>div[style*="position: relative"]{height:calc(100% - 44px)}}
+@media(prefers-reduced-motion:reduce){.zone-item,.zone-item img,#zoneViewer,.hoho-nav-item{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
 
 <aside id="hohoSidebar">
   <div class="hoho-brand">
-    <div class="hoho-mark"><svg viewBox="0 0 24 24"><path d="M4 8.5 12 3l8 5.5v7L12 21l-8-5.5z"/><path d="m8 10 4 2.5 4-2.5M12 12.5V17"/></svg></div>
-    <div><strong>HOHO GAMES</strong><small>Arcade network</small></div>
+    <div><strong>HOHO GAMES</strong><small>ARCADE NETWORK</small></div>
   </div>
   <div class="hoho-nav-label">Library</div>
   <nav id="hohoNav">
@@ -1267,13 +1346,14 @@ searchBar.addEventListener("input", () => {
     }, 80);
 });
 
-function openZone(file) {
+async function openZone(file) {
     if (file.url.startsWith("http")) {
         window.open(file.url, "_blank", "noopener,noreferrer");
         return;
     }
 
     iframeLoader.classList.remove('hidden');
+    zoneFrame.style.opacity = '0';
     document.getElementById('zoneName').textContent = file.name;
     document.getElementById('zoneId').textContent = file.id;
     document.getElementById('zoneAuthor').textContent = "by " + (file.author || "Unknown");
@@ -1281,10 +1361,28 @@ function openZone(file) {
     authorLink.href = file.authorLink || "#";
     zoneViewer.classList.add("active");
 
-    // Navigate the iframe directly. This preserves relative asset URLs and lets
-    // the browser/CDN cache the game instead of downloading and rewriting HTML.
     const url = file.url.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-    zoneFrame.src = url;
+    zoneFrame.removeAttribute('srcdoc');
+    zoneFrame.src = 'about:blank';
+
+    // Some static hosts serve stored .html files as text/plain. Fetching and
+    // assigning srcdoc forces HTML parsing; <base> preserves relative game assets.
+    try {
+        const response = await fetch(url, { cache: 'default' });
+        if (!response.ok) throw new Error('Game request failed: ' + response.status);
+        let source = await response.text();
+        const baseTag = '<base href="' + url.replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '">';
+        if (/<head(?:\s[^>]*)?>/i.test(source)) {
+            if (/<base\b/i.test(source)) source = source.replace(/<base\b[^>]*>/i, baseTag);
+            else source = source.replace(/<head(?:\s[^>]*)?>/i, match => match + baseTag);
+        } else {
+            source = '<!doctype html><html><head>' + baseTag + '</head><body>' + source + '</body></html>';
+        }
+        zoneFrame.srcdoc = source;
+    } catch (error) {
+        console.warn('Could not fetch game HTML; falling back to direct iframe navigation.', error);
+        zoneFrame.src = url;
+    }
 
     const u = new URL(window.location);
     u.searchParams.set('id', file.id);
@@ -1293,6 +1391,7 @@ function openZone(file) {
 
 zoneFrame.addEventListener('load', () => {
     iframeLoader.classList.add('hidden');
+    zoneFrame.style.opacity = '1';
 });
 
 function aboutBlank() {
