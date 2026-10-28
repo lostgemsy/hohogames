@@ -907,9 +907,25 @@ header{background:rgba(8,8,8,.96);border-color:#242424;backdrop-filter:blur(18px
 @media(max-width:580px){#container,.genre-games{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.zone-item{border-radius:14px}.zone-header{padding:7px 9px}.zone-controls{gap:5px}.zone-controls button{font-size:10px;padding:7px 9px}#zoneViewer>div[style*="position: relative"]{height:calc(100% - 44px)}}
 @media(prefers-reduced-motion:reduce){.zone-item,.zone-item img,#zoneViewer,.hoho-nav-item{animation:none!important;transition:none!important}}
 
+
+#hohoBoot{position:fixed;inset:0;z-index:10000;background:#050505;color:#eee;display:flex;align-items:center;justify-content:center;padding:22px;font:13px/1.55 ui-monospace,Consolas,monospace;transition:opacity .55s,visibility .55s}
+#hohoBoot.done{opacity:0;visibility:hidden;pointer-events:none}.boot-window{width:min(720px,96vw);border:1px solid #333;background:#0b0b0b;box-shadow:0 24px 100px #000;border-radius:10px;overflow:hidden;animation:bootIn .5s ease both}
+@keyframes bootIn{from{opacity:0;transform:perspective(900px) rotateX(5deg) translateY(18px)}to{opacity:1;transform:none}}
+.boot-titlebar{height:38px;display:flex;align-items:center;gap:7px;padding:0 13px;background:#151515;border-bottom:1px solid #292929;color:#aaa;font-size:11px}.boot-light{width:8px;height:8px;border-radius:50%;background:#777}.boot-light:nth-child(3){background:#eee}.boot-title{margin-left:8px}
+.boot-body{padding:22px 24px}.boot-brand{font-size:19px;font-weight:800;letter-spacing:.12em;margin-bottom:5px}.boot-sub{color:#888;margin-bottom:17px}
+.boot-status{display:grid;grid-template-columns:1fr auto;gap:7px 16px;margin:14px 0 18px}.boot-status span:nth-child(odd){color:#aaa}.boot-status span:nth-child(even){color:#777}.boot-status .ok{color:#eee!important}
+.boot-log{min-height:42px;color:#bdbdbd;white-space:pre-wrap}.boot-progress{height:3px;background:#242424;margin-top:18px}.boot-progress i{display:block;height:100%;width:0;background:#eee;transition:width .35s}
+#container,#featuredZones,.genre-games{gap:8px!important}.zone-item{padding:0!important;border-width:1px!important;min-width:0}.zone-item img{aspect-ratio:1.08!important}.zone-item button{padding:9px 5px!important;font-size:12px!important}
+#featuredZones .zone-item,.genre-games .zone-item{flex-basis:clamp(125px,15vw,178px)!important}
+#hohoSigma{width:100%;max-height:100px;object-fit:contain;display:block;margin:5px auto;border-radius:8px;opacity:.9;transition:transform .25s}.search-wrap.intro-search{animation:searchDock 1.5s cubic-bezier(.2,.75,.25,1) both}
+@keyframes searchDock{0%,55%{transform:translateY(22vh) scale(1.12)}100%{transform:translateY(0) scale(1)}}
+@keyframes cardReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}.zone-item{animation:cardReveal .42s ease both}
+@media(max-width:700px){.boot-body{padding:16px}.boot-status{font-size:11px}}@media(prefers-reduced-motion:reduce){#hohoBoot,.boot-window,.zone-item{animation:none!important}}
 </style>
 </head>
 <body>
+<div id="hohoBoot" aria-live="polite"><div class="boot-window"><div class="boot-titlebar"><i class="boot-light"></i><i class="boot-light"></i><i class="boot-light"></i><span class="boot-title">HOHO SYSTEM INITIALIZER — terminal</span></div><div class="boot-body"><div class="boot-brand">HOHO GAMES <span style="color:#777;font-weight:400">/ ARCADE NETWORK</span></div><div class="boot-sub">Starting client services and preparing your library…</div><div class="boot-status"><span>Core runtime</span><span id="bootCore">CONNECTING</span><span>Game catalog</span><span id="bootCatalog">WAITING</span><span>Media CDN</span><span id="bootMedia">WAITING</span><span>Interface modules</span><span id="bootUI">WAITING</span></div><div class="boot-log" id="bootLog">C:\HOHO&gt; initialize --library --animations --assets</div><div class="boot-progress"><i id="bootProgress"></i></div></div></div></div>
+
 
 <aside id="hohoSidebar">
   <div class="hoho-brand">
@@ -938,7 +954,7 @@ header{background:rgba(8,8,8,.96);border-color:#242424;backdrop-filter:blur(18px
   </nav>
   <div class="hoho-sidebar-bottom">
     <div class="hoho-profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span id="hohoProfileLabel">Guest profile · Sign in</span></div>
-    <img id="hohoCat" src="cat.gif" alt="Dancing cat logo" onerror="this.style.display='none'">
+    <img id="hohoCat" src="https://cdn.jsdelivr.net/gh/lostgemsy/hohogames@main/cat.gif" alt="Dancing cat logo" onerror="this.style.display='none'"><img id="hohoSigma" src="https://cdn.jsdelivr.net/gh/lostgemsy/hohogames@main/sigma.gif" alt="Sigma animation" onerror="this.style.display='none'">
   </div>
 </aside>
 <div id="hohoLibraryLoader"><div class="hoho-loader-ring"></div><strong>Loading your game library</strong><span>Finding something fun to play…</span></div>
@@ -1580,5 +1596,17 @@ $('hohoRoomForm').addEventListener('submit',async e=>{
 document.querySelectorAll('[data-close="hohoQueueModal"]').forEach(b=>b.addEventListener('click',stopQueue));
 </script>
 
+
+<script>
+(function(){
+const overlay=document.getElementById('hohoBoot');if(!overlay)return;
+const log=document.getElementById('bootLog'),bar=document.getElementById('bootProgress');
+const tasks=[['bootCore','Runtime initialized',22],['bootCatalog','Game catalog linked',48],['bootMedia','jsDelivr assets reachable',74],['bootUI','Interface modules ready',100]];let n=0;
+function next(){if(n>=tasks.length){log.textContent+='\nC:\\HOHO> launch library';setTimeout(()=>{overlay.classList.add('done');const s=document.querySelector('.search-wrap');s&&s.classList.add('intro-search');setTimeout(()=>overlay.remove(),650)},350);return}
+const t=tasks[n++],el=document.getElementById(t[0]);if(el){el.textContent='CONNECTED';el.className='ok'}bar.style.width=t[2]+'%';log.textContent+='\n[ OK ] '+t[1];setTimeout(next,330)}
+setTimeout(next,350);
+const search=document.querySelector('.search-wrap');document.querySelectorAll('.hoho-nav-item').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.category==='All Games'&&search){search.classList.remove('intro-search');void search.offsetWidth;search.classList.add('intro-search');setTimeout(()=>search.classList.remove('intro-search'),1600)}}));
+})();
+</script>
 </body>
 </html>
