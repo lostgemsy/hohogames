@@ -962,7 +962,7 @@ header{background:rgba(8,8,8,.96);border-color:#242424;backdrop-filter:blur(18px
 body.hoho-sidebar-collapsed{padding-left:20px!important}
 body.hoho-sidebar-collapsed #hohoSidebar{transform:translateX(-105%);opacity:0;pointer-events:none}
 body.hoho-sidebar-collapsed header,body.hoho-sidebar-collapsed main{margin-left:auto!important;margin-right:auto!important;max-width:1240px}
-#hohoSidebar .hoho-collapse-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 14px;padding:9px 10px;background:#111;color:#eee;border:1px solid #333;border-radius:10px;font:600 11px/1.2 inherit;cursor:pointer;transition:background .2s ease,transform .2s ease}
+#hohoSidebar .hoho-collapse-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 14px;padding:9px 10px;background:#111;color:#eee;border:1px solid #333;border-radius:10px;font:600 11px/1.2 system-ui,sans-serif;cursor:pointer;transition:background .2s ease,transform .2s ease}
 #hohoSidebar .hoho-collapse-btn:hover{background:#242424;transform:translateY(-1px)}
 .zone-item button,.hoho-nav-item,.theme-toggle,.chat-btn{transition:transform .22s ease,opacity .22s ease,background .25s ease,box-shadow .25s ease}
 .zone-item button:active,.hoho-nav-item:active,.theme-toggle:active,.chat-btn:active{transform:scale(.97)}
@@ -1679,7 +1679,7 @@ document.querySelectorAll('[data-close="hohoQueueModal"]').forEach(b=>b.addEvent
      const dx=finalRect.left-(window.innerWidth/2-finalRect.width/2);
      const dy=finalRect.top-(window.innerHeight/2-finalRect.height/2);
      const anim=search.animate([{left:'50vw',top:'50vh',width:'min(620px, calc(100vw - 40px))',transform:'translate(-50%,-50%) scale(1.04)'},{left:finalRect.left+'px',top:finalRect.top+'px',width:finalRect.width+'px',transform:'translate(0,0) scale(1)'}],{duration:1050,easing:'cubic-bezier(.2,.85,.2,1)',fill:'forwards'});
-     anim.onfinish=()=>{search.style.cssText='';search.classList.remove('boot-center');};
+     anim.onfinish=()=>{anim.cancel();search.style.cssText='';search.classList.remove('boot-center');};
     }
     setTimeout(()=>overlay.remove(),650);
    },250);
