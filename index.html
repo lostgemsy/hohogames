@@ -921,6 +921,56 @@ header{background:rgba(8,8,8,.96);border-color:#242424;backdrop-filter:blur(18px
 @keyframes searchDock{0%,55%{transform:translateY(22vh) scale(1.12)}100%{transform:translateY(0) scale(1)}}
 @keyframes cardReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}.zone-item{animation:cardReveal .42s ease both}
 @media(max-width:700px){.boot-body{padding:16px}.boot-status{font-size:11px}}@media(prefers-reduced-motion:reduce){#hohoBoot,.boot-window,.zone-item{animation:none!important}}
+
+/* ===== HOHO MOTION PASS: terminal, hero carousel, responsive category rail ===== */
+#hohoBoot{display:block;align-items:initial;justify-content:initial;padding:28px 30px;background:#050505;color:#f5f5f5;z-index:10000}
+#hohoBoot .boot-window{width:auto;max-width:760px;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;animation:none}
+#hohoBoot .boot-titlebar{display:none}
+#hohoBoot .boot-body{padding:0}
+#hohoBoot .boot-brand{font-size:14px;letter-spacing:.16em;margin:0 0 6px;color:#fff}
+#hohoBoot .boot-sub{font-size:12px;color:#888;margin-bottom:18px}
+#hohoBoot .boot-status{display:flex;flex-direction:column;gap:5px;margin:0 0 16px;font-size:12px}
+#hohoBoot .boot-status span:nth-child(odd){color:#777}
+#hohoBoot .boot-status span:nth-child(even){color:#eee}
+#hohoBoot .boot-log{font-size:13px;line-height:1.9;min-height:100px;max-width:760px;color:#f0f0f0;text-shadow:0 0 16px #ffffff22}
+#hohoBoot .boot-progress{width:min(440px,85vw);height:2px;background:#252525;margin-top:14px}
+#hohoBoot .boot-progress i{background:#fff}
+#hohoBoot .boot-window:before{content:"";display:block;width:8px;height:8px;border-radius:50%;background:#eee;margin:0 0 18px;box-shadow:16px 0 #888,32px 0 #444}
+#hohoBoot.done{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px)}
+.search-wrap{transition:width .45s cubic-bezier(.2,.8,.2,1),opacity .35s ease}
+.search-wrap.boot-center{position:fixed!important;left:50vw!important;top:50vh!important;z-index:10002!important;width:min(620px,calc(100vw - 40px))!important;min-width:0!important;transform:translate(-50%,-50%) scale(1.04);filter:drop-shadow(0 18px 45px #0004)}
+.search-wrap.boot-center input{height:58px!important;font-size:17px!important;border-radius:16px!important;box-shadow:0 18px 60px #0002}
+.search-wrap.boot-docking{transition:none}
+#featuredZones{display:flex!important;gap:0!important;overflow-x:auto!important;scroll-snap-type:x mandatory;scroll-behavior:smooth!important;overscroll-behavior-x:contain;width:100%;padding:3px 2px 14px}
+#featuredZones .zone-item{flex:0 0 100%!important;width:100%!important;max-width:100%!important;min-width:100%!important;scroll-snap-align:start;border-radius:18px!important;overflow:hidden!important;position:relative;box-shadow:0 18px 50px #0002;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease!important}
+#featuredZones .zone-item:hover{transform:translateY(-3px) scale(.995)!important;box-shadow:0 25px 65px #0003}
+#featuredZones .zone-item img{display:block;width:100%!important;height:clamp(230px,35vw,410px)!important;max-height:410px!important;aspect-ratio:16/7!important;object-fit:cover!important;border-radius:0!important}
+#featuredZones .zone-item button{min-height:52px!important;padding:15px 20px!important;font-size:clamp(15px,1.5vw,19px)!important;font-weight:800!important;text-align:left!important;letter-spacing:.01em}
+.featured-shell{position:relative;isolation:isolate}
+#featuredZonesWrapper{margin-bottom:34px}
+#featuredZonesWrapper .genre-heading{margin-bottom:12px}
+#featuredZonesWrapper .carousel-arrow{z-index:5;top:45%;width:46px;height:46px;border-radius:50%;background:#0b0b0bdd;color:#fff;border:1px solid #ffffff55;backdrop-filter:blur(12px);box-shadow:0 8px 30px #0003;transition:transform .22s ease,background .22s ease}
+#featuredZonesWrapper .carousel-arrow:hover{transform:scale(1.08);background:#000}
+#featuredZones .zone-item img{transition:transform .75s cubic-bezier(.2,.8,.2,1),filter .4s ease}
+#featuredZones .zone-item:hover img{transform:scale(1.025);filter:saturate(1.06)}
+#container,#rpgGames,#horrorGames{gap:5px!important}
+#container .zone-item,#rpgGames .zone-item,#horrorGames .zone-item{border-radius:10px!important}
+#hohoSigma{width:100%;max-height:150px;object-fit:contain;display:block;margin:10px auto;border-radius:12px;opacity:1;transition:transform .35s ease,filter .35s ease}
+#hohoSigma:hover{transform:scale(1.04);filter:contrast(1.08)}
+#hohoCat{max-width:100%;max-height:80px;object-fit:contain}
+#hohoSidebar{transition:transform .42s cubic-bezier(.2,.8,.2,1),width .42s ease,padding .42s ease,opacity .3s ease}
+body.hoho-sidebar-collapsed{padding-left:20px!important}
+body.hoho-sidebar-collapsed #hohoSidebar{transform:translateX(-105%);opacity:0;pointer-events:none}
+body.hoho-sidebar-collapsed header,body.hoho-sidebar-collapsed main{margin-left:auto!important;margin-right:auto!important;max-width:1240px}
+#hohoSidebar .hoho-collapse-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;margin:8px 0 14px;padding:9px 10px;background:#111;color:#eee;border:1px solid #333;border-radius:10px;font:600 11px/1.2 inherit;cursor:pointer;transition:background .2s ease,transform .2s ease}
+#hohoSidebar .hoho-collapse-btn:hover{background:#242424;transform:translateY(-1px)}
+.zone-item button,.hoho-nav-item,.theme-toggle,.chat-btn{transition:transform .22s ease,opacity .22s ease,background .25s ease,box-shadow .25s ease}
+.zone-item button:active,.hoho-nav-item:active,.theme-toggle:active,.chat-btn:active{transform:scale(.97)}
+@media(max-width:700px){#hohoBoot{padding:22px 18px}#featuredZones .zone-item img{height:clamp(210px,55vw,310px)!important}#featuredZonesWrapper .carousel-arrow{width:38px;height:38px}.search-wrap.boot-center input{height:52px!important}}
+@media(prefers-reduced-motion:reduce){#hohoBoot,.search-wrap,#featuredZones .zone-item,#featuredZones .zone-item img,#hohoSidebar{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+
+@keyframes hohoPageEnter{from{opacity:.25;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.hoho-page-enter{animation:hohoPageEnter .42s cubic-bezier(.2,.8,.2,1) both}
 </style>
 </head>
 <body>
@@ -929,6 +979,7 @@ header{background:rgba(8,8,8,.96);border-color:#242424;backdrop-filter:blur(18px
 
 <aside id="hohoSidebar">
   <div class="hoho-brand">
+    <button class="hoho-collapse-btn" id="hohoCollapseCategories" type="button" aria-expanded="true">− Hide categories</button>
     <div><strong>HOHO GAMES</strong><small>ARCADE NETWORK</small></div>
   </div>
   <div class="hoho-nav-label">Library</div>
@@ -1599,13 +1650,86 @@ document.querySelectorAll('[data-close="hohoQueueModal"]').forEach(b=>b.addEvent
 
 <script>
 (function(){
-const overlay=document.getElementById('hohoBoot');if(!overlay)return;
-const log=document.getElementById('bootLog'),bar=document.getElementById('bootProgress');
-const tasks=[['bootCore','Runtime initialized',22],['bootCatalog','Game catalog linked',48],['bootMedia','jsDelivr assets reachable',74],['bootUI','Interface modules ready',100]];let n=0;
-function next(){if(n>=tasks.length){log.textContent+='\nC:\\HOHO> launch library';setTimeout(()=>{overlay.classList.add('done');const s=document.querySelector('.search-wrap');s&&s.classList.add('intro-search');setTimeout(()=>overlay.remove(),650)},350);return}
-const t=tasks[n++],el=document.getElementById(t[0]);if(el){el.textContent='CONNECTED';el.className='ok'}bar.style.width=t[2]+'%';log.textContent+='\n[ OK ] '+t[1];setTimeout(next,330)}
-setTimeout(next,350);
-const search=document.querySelector('.search-wrap');document.querySelectorAll('.hoho-nav-item').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.category==='All Games'&&search){search.classList.remove('intro-search');void search.offsetWidth;search.classList.add('intro-search');setTimeout(()=>search.classList.remove('intro-search'),1600)}}));
+ const overlay=document.getElementById('hohoBoot'); if(!overlay)return;
+ const log=document.getElementById('bootLog'),bar=document.getElementById('bootProgress');
+ const search=document.querySelector('.search-wrap');
+ const commands=[
+  ['bootCore','[ OK ] runtime kernel initialized',22],
+  ['bootCatalog','[ OK ] game catalog mounted',44],
+  ['bootMedia','[ OK ] CDN / media assets reachable',66],
+  ['bootUI','[ OK ] interface modules connected',86],
+  [null,'[ OK ] animation engine ready',100]
+ ];
+ if(search)search.classList.add('boot-center');
+ log.textContent='C:\\HOHO> boot --quiet --monochrome\\n';
+ let n=0;
+ function next(){
+  if(n>=commands.length){
+   log.textContent+='C:\\HOHO> launch hoho-games\\n';
+   setTimeout(()=>{
+    overlay.classList.add('done');
+    if(search){
+     const target=search.getBoundingClientRect();
+     search.classList.remove('boot-center');
+     search.style.visibility='hidden';
+     const finalRect=search.getBoundingClientRect();
+     search.style.position='fixed';search.style.left='50vw';search.style.top='50vh';
+     search.style.width='min(620px, calc(100vw - 40px))';search.style.minWidth='0';
+     search.style.transform='translate(-50%, -50%) scale(1.04)';search.style.zIndex='10002';search.style.visibility='visible';
+     const dx=finalRect.left-(window.innerWidth/2-finalRect.width/2);
+     const dy=finalRect.top-(window.innerHeight/2-finalRect.height/2);
+     const anim=search.animate([{left:'50vw',top:'50vh',width:'min(620px, calc(100vw - 40px))',transform:'translate(-50%,-50%) scale(1.04)'},{left:finalRect.left+'px',top:finalRect.top+'px',width:finalRect.width+'px',transform:'translate(0,0) scale(1)'}],{duration:1050,easing:'cubic-bezier(.2,.85,.2,1)',fill:'forwards'});
+     anim.onfinish=()=>{search.style.cssText='';search.classList.remove('boot-center');};
+    }
+    setTimeout(()=>overlay.remove(),650);
+   },250);
+   return;
+  }
+  const [id,line,pct]=commands[n++];
+  if(id){const el=document.getElementById(id);if(el){el.textContent='CONNECTED';el.className='ok';}}
+  bar.style.width=pct+'%';
+  log.textContent+=line+'\\n';
+  setTimeout(next,360);
+ }
+ setTimeout(next,320);
+ // Automatic, single-feature recommendation slider.
+ const track=document.getElementById('featuredZones');
+ const prev=document.getElementById('featuredPrev'),nextBtn=document.getElementById('featuredNext');
+ let carouselTimer=null,paused=false;
+ function stepCarousel(direction){
+  if(!track)return;
+  const max=track.scrollWidth-track.clientWidth;
+  if(max<=4)return;
+  const atEnd=track.scrollLeft>=max-8;
+  if(direction>0&&atEnd)track.scrollTo({left:0,behavior:'smooth'});
+  else if(direction<0&&track.scrollLeft<=8)track.scrollTo({left:max,behavior:'smooth'});
+  else track.scrollBy({left:direction*track.clientWidth,behavior:'smooth'});
+ }
+ if(prev)prev.addEventListener('click',()=>stepCarousel(-1));
+ if(nextBtn)nextBtn.addEventListener('click',()=>stepCarousel(1));
+ function startCarousel(){if(carouselTimer)clearInterval(carouselTimer);carouselTimer=setInterval(()=>{if(!paused&&track&&track.children.length>1&&document.visibilityState==='visible')stepCarousel(1)},5200);}
+ if(track){
+  track.addEventListener('mouseenter',()=>paused=true);track.addEventListener('mouseleave',()=>paused=false);
+  track.addEventListener('focusin',()=>paused=true);track.addEventListener('focusout',()=>paused=false);
+  new MutationObserver(()=>startCarousel()).observe(track,{childList:true});
+  startCarousel();
+ }
+ // Category rail control: slide it away and let the library use the space.
+ const collapse=document.getElementById('hohoCollapseCategories');
+ if(collapse)collapse.addEventListener('click',()=>{
+  const hidden=document.body.classList.toggle('hoho-sidebar-collapsed');
+  collapse.setAttribute('aria-expanded',String(!hidden));
+  collapse.textContent=hidden?'+ Show categories':'− Hide categories';
+  if(search){
+   search.classList.remove('intro-search');void search.offsetWidth;search.classList.add('intro-search');
+   setTimeout(()=>search.classList.remove('intro-search'),1150);
+  }
+ });
+ // Smoothly reveal cards after category switches.
+ document.querySelectorAll('.hoho-nav-item[data-category]').forEach(btn=>btn.addEventListener('click',()=>{
+  const main=document.querySelector('main');if(!main)return;
+  main.classList.remove('hoho-page-enter');void main.offsetWidth;main.classList.add('hoho-page-enter');
+ }));
 })();
 </script>
 </body>
