@@ -154,8 +154,38 @@
       background: #6b3acb;
     }
 
-    #overlay.mouse-disabled #mouse-controls {
+    #overlay.mouse-disabled #mouse-controls,
+    #overlay.mouse-disabled #trackpad {
       display: none;
+    }
+
+    /* Dedicated touch area for moving the game-scoped virtual cursor. */
+    #trackpad {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(150px, 42vw, 320px);
+      height: clamp(90px, 18vh, 150px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(255, 255, 255, .7);
+      border-radius: 18px;
+      color: rgba(255, 255, 255, .9);
+      background: rgba(25, 25, 35, .42);
+      box-shadow: inset 0 0 18px rgba(255, 255, 255, .1);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      pointer-events: auto;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #trackpad:active {
+      background: rgba(60, 50, 85, .58);
     }
 
     /* Directional control cluster */
@@ -309,6 +339,10 @@
       </button>
     </div>
 
+    <div id="trackpad" role="application" aria-label="Trackpad: drag to move the cursor">
+      TRACKPAD
+    </div>
+
     <div id="controls">
       <button class="arrow" id="left" type="button"
         aria-label="Left" data-key="ArrowLeft">←</button>
@@ -341,6 +375,16 @@
       let activeTouchPointer = null;
       let lastTouchX = 0;
       let lastTouchY = 0;
+      let trackpadPointer = null;
+      let lastTrackpadX = 0;
+      let lastTrackpadY = 0;
+
+      function setMouseEnabled(enabled) {
+        overlay.classList.toggle("mouse-disabled", !enabled);
+        mouseToggle.textContent = enabled ? "MOUSE ON" : "MOUSE OFF";
+        mouseToggle.setAttribute("aria-pressed", String(enabled));
+        if (!enabled) releaseAllMouseButtons();
+      }
 
       function moveVirtualCursor(x, y) {
         virtualCursorX = Math.max(0, Math.min(window.innerWidth, x));
@@ -358,12 +402,7 @@
 
       // Send keyboard events to the game window.
       function sendKey(key, type) {
-        const target = document.activeElement;
-        const eventTarget =
-          target && target !== document.body
-            ? target
-            : document;
-
+        const eventTarget = document;
         const keyCode = {
           ArrowLeft: 37,
           ArrowUp: 38,
@@ -382,31 +421,9 @@
           composed: true
         });
 
-        eventTarget.dispatchEvent(event);
-        window.dispatchEvent(new KeyboardEvent(type, {
-          key: key,
-          code: key === " " ? "Space" : key,
-          keyCode,
-          which: keyCode,
-          bubbles: true,
-          cancelable: true
-        }));
-
-        // Also dispatch to the game canvas if available.
-        const canvas = document.querySelector(
-          "#openfl-content canvas"
-        );
-
-        if (canvas && canvas !== eventTarget) {
-          canvas.dispatchEvent(new KeyboardEvent(type, {
-            key: key,
-            code: key === " " ? "Space" : key,
-            keyCode,
-            which: keyCode,
-            bubbles: true,
-            cancelable: true
-          }));
-        }
+        const canvas = document.querySelector("#openfl-content canvas");
+        const target = canvas || eventTarget;
+        target.dispatchEvent(event);
       }
 
       function press(key, button) {
@@ -470,6 +487,36 @@
           clientY: virtualCursorY
         }));
       }
+
+      // Drag on the dedicated trackpad to move the virtual cursor.
+      const trackpad = document.getElementById("trackpad");
+      trackpad.addEventListener("pointerdown", event => {
+        event.preventDefault();
+        trackpadPointer = event.pointerId;
+        lastTrackpadX = event.clientX;
+        lastTrackpadY = event.clientY;
+        trackpad.setPointerCapture?.(event.pointerId);
+      });
+
+      trackpad.addEventListener("pointermove", event => {
+        if (event.pointerId !== trackpadPointer) return;
+        event.preventDefault();
+        moveVirtualCursor(
+          virtualCursorX + event.clientX - lastTrackpadX,
+          virtualCursorY + event.clientY - lastTrackpadY
+        );
+        lastTrackpadX = event.clientX;
+        lastTrackpadY = event.clientY;
+        dispatchMouseMove();
+      });
+
+      function stopTrackpadPointer(event) {
+        if (event.pointerId === trackpadPointer) trackpadPointer = null;
+      }
+
+      trackpad.addEventListener("pointerup", stopTrackpadPointer);
+      trackpad.addEventListener("pointercancel", stopTrackpadPointer);
+      trackpad.addEventListener("lostpointercapture", stopTrackpadPointer);
 
       // Drag on the game area like a touchpad to move the virtual cursor.
       gameContent.addEventListener("pointerdown", event => {
@@ -580,6 +627,14 @@
         release("Enter");
       });
 
+      // Also support keyboard activation of the Enter button.
+      enterButton.addEventListener("click", event => {
+        if (event.detail === 0) {
+          sendKey("Enter", "keydown");
+          sendKey("Enter", "keyup");
+        }
+      });
+
       // Touch controls send mouse down/up events to the game canvas.
       document.querySelectorAll(".mouse-button").forEach(button => {
         const buttonNumber = Number(button.dataset.mouseButton);
@@ -609,11 +664,20 @@
       });
 
       mouseToggle.addEventListener("click", () => {
-        const enabled = overlay.classList.toggle("mouse-disabled") === false;
-        mouseToggle.textContent = enabled ? "MOUSE ON" : "MOUSE OFF";
-        mouseToggle.setAttribute("aria-pressed", String(enabled));
-        if (!enabled) releaseAllMouseButtons();
+        setMouseEnabled(overlay.classList.contains("mouse-disabled"));
       });
+
+      // Re-enable mouse controls if the game recreates its canvas.
+      let observedCanvas = document.querySelector("#openfl-content canvas");
+      const canvasObserver = new MutationObserver(() => {
+        const canvas = document.querySelector("#openfl-content canvas");
+        if (canvas && canvas !== observedCanvas) {
+          observedCanvas = canvas;
+          setMouseEnabled(true);
+          moveVirtualCursor(window.innerWidth / 2, window.innerHeight / 2);
+        }
+      });
+      canvasObserver.observe(gameContent, { childList: true, subtree: true });
 
       // Toggle the arrows without hiding the Enter button.
       hideButton.addEventListener("click", () => {
