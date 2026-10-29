@@ -46,6 +46,27 @@
       display: block;
     }
 
+    /* A game-scoped cursor for touch devices; browsers cannot move the OS cursor. */
+    #virtual-cursor {
+      position: fixed;
+      z-index: 20;
+      left: 50%;
+      top: 50%;
+      width: 22px;
+      height: 22px;
+      border: 2px solid white;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .28);
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, .7);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      display: block;
+    }
+
+    #overlay.mouse-disabled ~ #virtual-cursor {
+      display: none;
+    }
+
     /* Overlay layer */
     #overlay {
       position: fixed;
@@ -303,14 +324,32 @@
     </div>
   </div>
 
+  <div id="virtual-cursor" aria-hidden="true"></div>
+
   <script>
     (() => {
       const overlay = document.getElementById("overlay");
       const enterButton = document.getElementById("enter-button");
       const hideButton = document.getElementById("hide-button");
       const mouseToggle = document.getElementById("mouse-toggle");
+      const gameContent = document.getElementById("openfl-content");
+      const virtualCursor = document.getElementById("virtual-cursor");
       const activeKeys = new Map();
       const activeMouseButtons = new Map();
+      let virtualCursorX = window.innerWidth / 2;
+      let virtualCursorY = window.innerHeight / 2;
+      let activeTouchPointer = null;
+      let lastTouchX = 0;
+      let lastTouchY = 0;
+
+      function moveVirtualCursor(x, y) {
+        virtualCursorX = Math.max(0, Math.min(window.innerWidth, x));
+        virtualCursorY = Math.max(0, Math.min(window.innerHeight, y));
+        virtualCursor.style.left = `${virtualCursorX}px`;
+        virtualCursor.style.top = `${virtualCursorY}px`;
+      }
+
+      moveVirtualCursor(virtualCursorX, virtualCursorY);
 
       // Keep the game canvas beneath the overlay.
       lime.embed("Funkin", "openfl-content", 1280, 720, {
@@ -325,9 +364,19 @@
             ? target
             : document;
 
+        const keyCode = {
+          ArrowLeft: 37,
+          ArrowUp: 38,
+          ArrowRight: 39,
+          ArrowDown: 40,
+          Enter: 13,
+          " ": 32
+        }[key] || 0;
         const event = new KeyboardEvent(type, {
           key: key,
-          code: key,
+          code: key === " " ? "Space" : key,
+          keyCode,
+          which: keyCode,
           bubbles: true,
           cancelable: true,
           composed: true
@@ -336,7 +385,9 @@
         eventTarget.dispatchEvent(event);
         window.dispatchEvent(new KeyboardEvent(type, {
           key: key,
-          code: key,
+          code: key === " " ? "Space" : key,
+          keyCode,
+          which: keyCode,
           bubbles: true,
           cancelable: true
         }));
@@ -349,7 +400,9 @@
         if (canvas && canvas !== eventTarget) {
           canvas.dispatchEvent(new KeyboardEvent(type, {
             key: key,
-            code: key,
+            code: key === " " ? "Space" : key,
+            keyCode,
+            which: keyCode,
             bubbles: true,
             cancelable: true
           }));
@@ -396,10 +449,62 @@
           view: window,
           button: buttonNumber,
           buttons,
-          clientX: rect ? rect.left + rect.width / 2 : 0,
-          clientY: rect ? rect.top + rect.height / 2 : 0
+          clientX: virtualCursorX,
+          clientY: virtualCursorY
         }));
       }
+
+      function dispatchMouseMove() {
+        const canvas = document.querySelector("#openfl-content canvas");
+        if (!canvas) return;
+        const buttons = [...activeMouseButtons.keys()].reduce(
+          (mask, button) => mask | (button === 0 ? 1 : 2), 0
+        );
+        canvas.dispatchEvent(new MouseEvent("mousemove", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+          button: -1,
+          buttons,
+          clientX: virtualCursorX,
+          clientY: virtualCursorY
+        }));
+      }
+
+      // Drag on the game area like a touchpad to move the virtual cursor.
+      gameContent.addEventListener("pointerdown", event => {
+        if (event.pointerType === "touch" && event.target.closest("canvas")) {
+          event.preventDefault();
+          activeTouchPointer = event.pointerId;
+          lastTouchX = event.clientX;
+          lastTouchY = event.clientY;
+          event.target.setPointerCapture?.(event.pointerId);
+        } else if (event.pointerType === "mouse") {
+          moveVirtualCursor(event.clientX, event.clientY);
+        }
+      });
+
+      gameContent.addEventListener("pointermove", event => {
+        if (event.pointerType === "mouse") {
+          moveVirtualCursor(event.clientX, event.clientY);
+        } else if (event.pointerType === "touch" && event.pointerId === activeTouchPointer) {
+          event.preventDefault();
+          moveVirtualCursor(
+            virtualCursorX + event.clientX - lastTouchX,
+            virtualCursorY + event.clientY - lastTouchY
+          );
+          lastTouchX = event.clientX;
+          lastTouchY = event.clientY;
+          dispatchMouseMove();
+        }
+      });
+
+      function stopTouchPointer(event) {
+        if (event.pointerId === activeTouchPointer) activeTouchPointer = null;
+      }
+
+      gameContent.addEventListener("pointerup", stopTouchPointer);
+      gameContent.addEventListener("pointercancel", stopTouchPointer);
 
       function pressMouseButton(buttonNumber, buttonElement) {
         if (activeMouseButtons.has(buttonNumber)) return;
